@@ -1,66 +1,71 @@
 <template>
 <div>
     <div class="top-bar">
-        <el-button type="primary" icon="el-icon-edit" @click="addProduct()">添加特产</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="addDormitory()">添加宿舍</el-button>
         <el-button :span="1" icon="el-icon-search">搜索</el-button>
     </div>
     <el-col :span="23" class="data-table">
         <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 100%">
             <el-table-column label="ID" width="80px" fixed>
                 <template slot-scope="scope">
-                    <span>{{ scope.row.productID }}</span>
+                    <span>{{ scope.row.dormitoryID }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="特产名称" width="150px" fixed>
+            <el-table-column label="宿舍名称" width="150px" fixed>
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-info">特产名称</i>&nbsp;&nbsp;{{ scope.row.productName }}</p>
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{ scope.row.productDate }}</p>
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-ticket">特产价格</i>&nbsp;&nbsp;{{ scope.row.productPrice }}</p>
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-comment">特产介绍</i>&nbsp;&nbsp;{{ scope.row.productDesc }}</p>
-                        <img :src="scope.row.productPicture" style="height:300px" />
+                        <p><i style="color:rgb(64,158,255);" class="el-icon-info">宿舍名称</i>&nbsp;&nbsp;{{ scope.row.dormitoryName }}</p>
+                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{ scope.row.dormitoryDate }}</p>
+                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-ticket">宿舍价格</i>&nbsp;&nbsp;{{ scope.row.dormitoryPrice }}</p>
+                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-comment">宿舍介绍</i>&nbsp;&nbsp;{{ scope.row.dormitoryDesc }}</p>
+                        <img :src="scope.row.dormitoryPicture" style="height:300px" />
                         <div slot="reference" class="name-wrapper">
-                            <span style="color:rgb(64,158,255);">{{ scope.row.productName }}</span>
+                            <span style="color:rgb(64,158,255);">{{ scope.row.dormitoryName }}</span>
                         </div>
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="特产价格" width="140px" sortable>
+            <el-table-column label="宿舍地址" width="200px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productPrice }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryAddress }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="宿舍价格" width="140px" sortable>
+                <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryPrice }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="联系电话" width="140px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productPhone }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryPhone }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="推荐星级" width="140px" sortable>
+            <el-table-column label="宿舍星级" width="140px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productStar }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryStar }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="余量" width="140px" sortable>
+            <el-table-column label="余量" :span="1" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productRemain }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryRemain }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="图片" width="380px">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.productPicture.slice(0, 40) + '...'}}</span>
+                    <span>{{ scope.row.dormitoryPicture.slice(0, 40) + '...'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="发布者" width="150px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productAuthor }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryAuthor }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="发布时间" width="200px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.productDate }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.dormitoryDate }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="150px" fixed="right">
+            <el-table-column label="操作" width="140px;" fixed="right">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' @confirm="handleDelete(scope.$index, scope.row)" icon="el-icon-info" icon-color="red" title="确定删除吗？">
@@ -75,23 +80,26 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%">
         <el-form ref="form" :model="form" :rules='rules' label-width="80px">
             <el-alert v-if="editable" title="管理员无法修改图片内容" type="warning" style="margin-bottom: 20px; margin-top:-20px;"></el-alert>
-            <el-form-item label="特产名称" prop="productName">
-                <el-input v-model="form.productName"></el-input>
+            <el-form-item label="宿舍名称" prop="dormitoryName">
+                <el-input v-model="form.dormitoryName"></el-input>
             </el-form-item>
-            <el-form-item label="特产介绍" prop="productDesc">
-                <el-input v-model="form.productDesc"></el-input>
+            <el-form-item label="宿舍介绍" prop="dormitoryDesc">
+                <el-input v-model="form.dormitoryDesc"></el-input>
             </el-form-item>
-            <el-form-item label="特产价格" prop="productPrice">
-                <el-input v-model="form.productPrice"></el-input>
+            <el-form-item label="宿舍地址" prop="dormitoryAddress">
+                <el-input v-model="form.dormitoryAddress"></el-input>
             </el-form-item>
-            <el-form-item label="推荐星级" prop="productStar">
-                <el-input v-model="form.productStar"></el-input>
+            <el-form-item label="宿舍价格" prop="dormitoryPrice">
+                <el-input v-model="form.dormitoryPrice"></el-input>
             </el-form-item>
-            <el-form-item label="联系电话" prop="productPhone">
-                <el-input v-model="form.productPhone"></el-input>
+            <el-form-item label="宿舍星级" prop="dormitoryStar">
+                <el-input v-model="form.dormitoryStar"></el-input>
             </el-form-item>
-            <el-form-item label="余量" prop="productRemain">
-                <el-input v-model="form.productRemain"></el-input>
+            <el-form-item label="联系电话" prop="dormitoryPhone">
+                <el-input v-model="form.dormitoryPhone"></el-input>
+            </el-form-item>
+            <el-form-item label="余量" prop="dormitoryRemain">
+                <el-input v-model="form.dormitoryRemain"></el-input>
             </el-form-item>
             <el-form-item v-show=!editable label="添加图片">
                 <el-upload class="avatar-uploader" action="http://localhost:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
@@ -106,18 +114,13 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button v-if="dialogTitle === '添加特产'" type="primary" @click="handleAddProduct('form')">发 布</el-button>
-            <el-button v-else type="primary" @click="handleModifyProduct('form')">修 改</el-button>
+            <el-button v-if="dialogTitle === '添加宿舍'" type="primary" @click="handleAddDormitory('form')">发 布</el-button>
+            <el-button v-else type="primary" @click="handleModifyDormitory('form')">修 改</el-button>
         </span>
     </el-dialog>
+
 </div>
 </template>
-
-<style scoped>
-.data-table {
-    margin-top: 20px;
-}
-</style>
 
 <script>
 const axios = require('axios')
@@ -125,7 +128,7 @@ const qs = require('qs')
 const ele = require('element-ui')
 
 export default {
-    name: 'manageUser',
+    name: 'manageDormitory',
     data() {
         return {
             currentPage: 1,
@@ -138,50 +141,51 @@ export default {
             // 修改公告时不能编辑图片
             editable: true,
             imgURL: '',
-            currentProductID: '',
-            dialogTitle: '添加特产',
+            currentDormitoryID: '',
+            dialogTitle: '添加宿舍',
             form: {
-                productName: '',
-                productDesc: '',
-                productPicture: '',
-                productPrice: '',
-                productPhone: '',
-                productRemain: '',
-                productStar: '',
-                productAuthor: ''
+                dormitoryName: '',
+                dormitoryDesc: '',
+                dormitoryAddress: '',
+                dormitoryPrice: '',
+                dormitoryStar: '',
+                dormitoryPhone: '',
+                dormitoryRemain: '',
+                dormitoryPicture: '',
+                dormitoryAuthor: ''
             },
             rules: {
-                productName: [{
+                dormitoryName: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productDesc: [{
+                dormitoryDesc: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productStar: [{
+                dormitoryAddress: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productPicture: [{
+                dormitoryPrice: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productPrice: [{
+                dormitoryStar: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productPhone: [{
+                dormitoryPhone: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                productRemain: [{
+                dormitoryRemain: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
@@ -190,7 +194,7 @@ export default {
         }
     },
     created() {
-        if (window.localStorage.getItem('userType') != 'admin') {
+        if (false) {
             ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
             this.$router.push('/login')
         } else {
@@ -198,7 +202,7 @@ export default {
             this.userName = window.localStorage.getItem('userName')
             axios({
                 method: 'get',
-                url: 'http://localhost:8080/getProductList',
+                url: 'http://localhost:8080/getDormitoryList',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 }
@@ -210,34 +214,55 @@ export default {
         }
     },
     methods: {
+        // 初始页currentPage、初始每页数据数pagesize和数据data
         handleSizeChange: function (size) {
             this.pagesize = size;
+            console.log(this.pagesize) //每页下拉显示数据
         },
         handleCurrentChange: function (currentPage) {
             this.currentPage = currentPage;
+            console.log(this.currentPage) //点击第几页
         },
-        addProduct() {
+        addDormitory() {
             this.dialogVisible = true
-            this.dialogTitle = '添加特产'
+            this.dialogTitle = '添加宿舍'
             this.editable = false
 
             // 表格中的内容（this.form）应该要清空才对，为了测试方便暂时不清空
         },
         handleEdit(index, row) {
-            this.dialogTitle = "修特产信息"
+            this.dialogTitle = "修改宿舍信息"
             this.dialogVisible = true
             this.editable = true
 
-            this.currentProductID = row.productID,
-                this.form.productName = row.productName,
-                this.form.productDesc = row.productDesc,
-                this.form.productPrice = row.productPrice,
-                this.form.productStar = row.productStar,
-                this.form.productPhone = row.productPhone,
-                this.form.productRemain = row.productRemain,
-                this.form.productPicture = row.productPicture
+            this.currentDormitoryID = row.dormitoryID,
+                this.form.dormitoryName = row.dormitoryName,
+                this.form.dormitoryDesc = row.dormitoryDesc,
+                this.form.dormitoryAddress = row.dormitoryAddress,
+                this.form.dormitoryPrice = row.dormitoryPrice,
+                this.form.dormitoryStar = row.dormitoryStar,
+                this.form.dormitoryPhone = row.dormitoryPhone,
+                this.form.dormitoryRemain = row.dormitoryRemain,
+                this.form.dormitoryPicture = row.dormitoryPicture
         },
-        handleAddProduct(formName) {
+        onProgress() {},
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.imgURL = file.url
+        },
+        handleAddSite(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.$refs.upload.submit();
+                    // 后面执行onSuccess函数
+                } else {
+                    ele.Message.error("请按要求输入表格内容")
+                }
+            })
+        },
+        handleAddDormitory(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.$refs.upload.submit();
@@ -249,32 +274,33 @@ export default {
         },
         onSuccess: function (response) {
             if (response.status === "success") {
-                this.form.productPicture = response.imgURL
+                this.form.dormitoryPicture = response.imgURL
                 let _this = this
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/addProduct',
+                    url: 'http://localhost:8080/addDormitory',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     data: qs.stringify({
-                        productName: this.form.productName,
-                        productDesc: this.form.productDesc,
-                        productPrice: this.form.productPrice,
-                        productStar: this.form.productStar,
-                        productPhone: this.form.productPhone,
-                        productRemain: this.form.productRemain,
-                        productPicture: this.form.productPicture,
-                        productAuthor: this.userName
+                        dormitoryName: this.form.dormitoryName,
+                        dormitoryDesc: this.form.dormitoryDesc,
+                        dormitoryAddress: this.form.dormitoryAddress,
+                        dormitoryPrice: this.form.dormitoryPrice,
+                        dormitoryStar: this.form.dormitoryStar,
+                        dormitoryPhone: this.form.dormitoryPhone,
+                        dormitoryRemain: this.form.dormitoryRemain,
+                        dormitoryPicture: this.form.dormitoryPicture,
+                        dormitoryAuthor: this.userName
                     })
                 }).then(function (response) {
                     let status = response.data.status
                     if (status == 'success') {
-                        ele.Message.success('创建特产成功')
+                        ele.Message.success('创建宿舍成功')
                         _this.tableData = response.data.dataList
                         _this.dialogVisible = false
                     } else {
-                        ele.Message.error("创建特产失败")
+                        ele.Message.error("创建宿舍失败")
                     }
                 }).catch(function (error) {
                     console.log(error)
@@ -283,37 +309,31 @@ export default {
                 ele.Message.error("图像上传失败，请重试")
             }
         },
-        onProgress() {},
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-            this.imgURL = file.url
-        },
-        handleModifyProduct(formName) {
+        handleModifyDormitory(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/updateProduct',
+                        url: 'http://localhost:8080/updateDormitory',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         data: qs.stringify({
-                            productID: this.currentProductID,
-                            productName: this.form.productName,
-                            productDesc: this.form.productDesc,
-                            productPrice: this.form.productPrice,
-                            productStar: this.form.productStar,
-                            productPhone: this.form.productPhone,
-                            productRemain: this.form.productRemain,
-                            productPicture: this.form.productPicture,
-                            productAuthor: this.userName
+                            dormitoryID: this.currentDormitoryID,
+                            dormitoryName: this.form.dormitoryName,
+                            dormitoryDesc: this.form.dormitoryDesc,
+                            dormitoryAddress: this.form.dormitoryAddress,
+                            dormitoryPrice: this.form.dormitoryPrice,
+                            dormitoryStar: this.form.dormitoryStar,
+                            dormitoryPhone: this.form.dormitoryPhone,
+                            dormitoryRemain: this.form.dormitoryRemain,
+                            dormitoryPicture: this.form.dormitoryPicture,
+                            dormitoryAuthor: this.userName
                         })
                     }).then(function (response) {
                         let status = response.data.status
-                        ele.Message.success('更新特产数据成功')
+                        ele.Message.success('更新宿舍数据成功')
                         _this.tableData = response.data.dataList
                         _this.dialogVisible = false
                     }).catch(function (error) {
@@ -329,12 +349,12 @@ export default {
             let _this = this
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/deleteProduct',
+                url: 'http://localhost:8080/deleteDormitory',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                 data: qs.stringify({
-                    productID: row.productID
+                    dormitoryID: row.dormitoryID
                 })
             }).then(function (response) {
                 ele.Message.success('更新数据成功')
@@ -346,3 +366,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.data-table {
+    margin-top: 20px;
+}
+</style>

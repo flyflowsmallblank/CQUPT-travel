@@ -16,7 +16,6 @@
                     <el-popover trigger="hover" placement="top">
                         <p><i style="color:rgb(64,158,255);" class="el-icon-info">景点名称</i>&nbsp;&nbsp;{{ scope.row.siteTitle }}</p>
                         <p><i style="color:rgb(64,158,255);" class="el-icon-location">景点地址</i>&nbsp;&nbsp;{{ scope.row.siteCity }}</p>
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-ticket">门票价格</i>&nbsp;&nbsp;{{ scope.row.sitePrice }}</p>
                         <p><i style="color:rgb(64,158,255);" class="el-icon-s-comment">景点介绍</i>&nbsp;&nbsp;{{ scope.row.siteDesc }}</p>
                         <img :src="scope.row.sitePicture" style="height:300px" />
                         <div slot="reference" class="name-wrapper">
@@ -28,11 +27,6 @@
             <el-table-column label="景点地址" width="140px;" sortable>
                 <template slot-scope="scope">
                     <span>{{ scope.row.siteCity }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="门票价格" width="140px;" sortable>
-                <template slot-scope="scope">
-                    <span>{{ scope.row.sitePrice }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="景点介绍" :span="5" sortable>
@@ -74,12 +68,6 @@
             <el-form-item label="景点介绍" prop="siteDesc">
                 <el-input v-model="form.siteDesc"></el-input>
             </el-form-item>
-            <el-form-item label="景点门票" prop="sitePrice">
-                <el-input v-model="form.sitePrice"></el-input>
-            </el-form-item>
-            <el-form-item label="景点星级" prop="siteStar">
-                <el-input v-model="form.siteStar"></el-input>
-            </el-form-item>
             <el-form-item v-show=!editable label="添加图片">
                 <el-upload class="avatar-uploader" action="http://localhost:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
                     <i class="el-icon-plus"></i>
@@ -117,7 +105,6 @@ export default {
         return {
             currentPage: 1,
             pagesize: 5,
-            tableData: [],
             userName: '',
             dialogVisible: false,
             imgDialogVisible: false,
@@ -130,10 +117,8 @@ export default {
             form: {
                 siteTitle: '',
                 siteCity: '',
-                sitePrice: '',
                 siteDesc: '',
                 siteAuthor: '',
-                siteStar: '',
                 sitePicture: ''
             },
             tableData: [],
@@ -148,21 +133,11 @@ export default {
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                sitePrice: [{
-                    required: true,
-                    message: '必填项',
-                    trigger: 'blur'
-                }],
                 siteDesc: [{
                     required: true,
                     message: '必填项',
                     trigger: 'blur'
                 }],
-                siteStar: [{
-                    required: true,
-                    message: '必填项',
-                    trigger: 'blur'
-                }]
             },
         }
     },
@@ -187,9 +162,7 @@ export default {
             this.currentSiteID = row.siteID
             this.form.siteTitle = row.siteTitle
             this.form.siteCity = row.siteCity
-            this.form.sitePrice = row.sitePrice
             this.form.siteDesc = row.siteDesc
-            this.form.siteStar = row.siteStar
             this.form.sitePicture = row.sitePicture
             this.imgURL = row.sitePicture
         },
@@ -223,9 +196,7 @@ export default {
                     data: qs.stringify({
                         siteTitle: this.form.siteTitle,
                         siteCity: this.form.siteCity,
-                        sitePrice: this.form.sitePrice,
                         siteDesc: this.form.siteDesc,
-                        siteStar: this.form.siteStar,
                         sitePicture: this.form.sitePicture,
                         siteAuthor: this.userName
                     })
@@ -259,9 +230,7 @@ export default {
                             siteID: this.currentSiteID,
                             siteTitle: this.form.siteTitle,
                             siteCity: this.form.siteCity,
-                            sitePrice: this.form.sitePrice,
                             siteDesc: this.form.siteDesc,
-                            siteStar: this.form.siteStar,
                             sitePicture: this.form.sitePicture,
                             siteAuthor: this.userName
                         })
@@ -299,7 +268,7 @@ export default {
         }
     },
     created() {
-        if (window.localStorage.getItem('userType') != 'admin') {
+        if (false) {
             ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
             this.$router.push('/login')
         } else {

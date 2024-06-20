@@ -135,7 +135,7 @@ export default {
                 }
             }).then(function (response) {
                 ele.Message.success('加载用户数据成功')
-                _this.tableData = response.data.userList
+                _this.tableData = response.data.data.userList
             }).catch(function (error) {
                 console.log(error)
             })

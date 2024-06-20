@@ -32,7 +32,7 @@ const routes = [{
 {
   path: '/hotel',
   name: 'Hotel',
-  component: () => import('../views/Hotel.vue')
+  component: () => import('../views/Dormitory.vue')
 },
 {
   path: '/announcement',

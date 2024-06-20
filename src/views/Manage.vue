@@ -21,7 +21,7 @@ import ManageAnnouncement from '@/components/ManageAnnouncement.vue'
 import ManageUser from '@/components/ManageUser.vue'
 import ManageSite from '@/components/ManageSite.vue'
 import ManageProduct from '@/components/ManageProduct.vue'
-import ManageHotel from '@/components/ManageHotel.vue'
+import ManageHotel from '@/components/ManageDormitory.vue'
 import ManageSystem from '@/components/ManageSystem.vue'
 
 const axios = require('axios')
