@@ -4,8 +4,8 @@
         <img src="./assets/logo.png" class="header-logo">
         <div id="nav">
             <router-link to="/">主页</router-link>
-            <router-link to="/site">景点信息</router-link>
-            <router-link to="/hotel">民宿信息</router-link>
+            <router-link to="/site">学校色彩</router-link>
+            <router-link to="/hotel">宿舍风采</router-link>
             <router-link to="/announcement">通知公告</router-link>
             <router-link to="/about">关于我们</router-link>
         </div>

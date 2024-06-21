@@ -22,15 +22,16 @@
                 <el-table-column :span="1">
                     <template slot-scope="scope">
                         <el-row>
-                            <el-col :span="8">
-                                <img class="desc-img" :src=scope.row.dormitoryPicture />
+                            <el-col :span="8" >
+								<div @click=detail(scope.$index)>
+									<img class="desc-img" :src=scope.row.dormitoryPicture />
+								</div>
                             </el-col>
                             <el-col :span="16">
                                 <div class="grid-cont-right" @click=detail(scope.$index)>
                                     <h2>{{ scope.row.dormitoryName }}</h2>
                                     <p><i style="color:#42b983;" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{ scope.row.dormitoryDate }}</p>
                                     <p><i style="color:#42b983;" class="el-icon-location">民宿地址</i>&nbsp;&nbsp;{{ scope.row.dormitoryAddress }}</p>
-                                    <p><i style="color:#42b983;" class="el-icon-s-ticket">住宿价格</i>&nbsp;&nbsp;{{ scope.row.dormitoryPrice }}</p>
                                 </div>
                             </el-col>
                         </el-row>
@@ -50,7 +51,6 @@
                     </el-rate>
                     <p><i style="color:#42b983;" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;&nbsp;{{ this.dormitoryDate }}</p>
                     <p><i style="color:#42b983;" class="el-icon-location">民宿地址</i>&nbsp;&nbsp;&nbsp;{{ this.dormitoryAddress }}</p>
-                    <p><i style="color:#42b983;" class="el-icon-s-ticket">住宿价格</i>&nbsp;&nbsp;&nbsp;{{ this.dormitoryPrice }}</p>
                     <p><i style="color:#42b983;" class="el-icon-s-ticket">民宿介绍</i>&nbsp;&nbsp;&nbsp;{{ this.dormitoryDesc }}</p>
                     <img :src=this.dormitoryPicture style="width:80%;" />
                 </div>
@@ -97,18 +97,73 @@ export default {
     created() {
         let _this = this
         this.userName = window.localStorage.getItem('userName')
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/getDormitoryList',
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded'
-            }
-        }).then(function (response) {
-            _this.tableData = response.data.dataList
-            console.log(_this.tableData)
-        }).catch(function (error) {
-            console.log(error)
-        })
+
+		const mockData = {
+			"status": "success",
+			"dataList": [
+				{
+					"dormitoryID": "1",
+					"dormitoryName": "Sunny Retreat",
+					"dormitoryDate": "2024-06-15",
+					"dormitoryAddress": "123 Sunlight St, Sunnyvale",
+					"dormitoryPrice": "$150 per night",
+					"dormitoryDesc": "A cozy and sunny retreat perfect for relaxation.",
+					"dormitoryAuthor": "Jane Doe",
+					"dormitoryStar": "4.5",
+					"dormitoryPicture": "https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0"
+				},
+				{
+					"dormitoryID": "2",
+					"dormitoryName": "Mountain Haven",
+					"dormitoryDate": "2024-05-20",
+					"dormitoryAddress": "456 Mountain Rd, Hillside",
+					"dormitoryPrice": "$200 per night",
+					"dormitoryDesc": "Escape to the mountains in this beautiful haven.",
+					"dormitoryAuthor": "John Smith",
+					"dormitoryStar": "4.7",
+					"dormitoryPicture": "https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg"
+				},
+				{
+					"dormitoryID": "3",
+					"dormitoryName": "Beachside Bliss",
+					"dormitoryDate": "2024-06-01",
+					"dormitoryAddress": "789 Ocean Ave, Beach City",
+					"dormitoryPrice": "$250 per night",
+					"dormitoryDesc": "Enjoy the sea breeze and stunning views at Beachside Bliss.",
+					"dormitoryAuthor": "Alice Johnson",
+					"dormitoryStar": "4.8",
+					"dormitoryPicture": "https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0"
+				},
+				{
+					"dormitoryID": "4",
+					"dormitoryName": "Urban Oasis",
+					"dormitoryDate": "2024-04-15",
+					"dormitoryAddress": "101 City Rd, Metropolis",
+					"dormitoryPrice": "$180 per night",
+					"dormitoryDesc": "A tranquil oasis in the heart of the city.",
+					"dormitoryAuthor": "Bob Brown",
+					"dormitoryStar": "4.6",
+					"dormitoryPicture": "https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg"
+				}
+			]
+		}
+		this.tableData = mockData.dataList
+		console.log(this.tableData);
+		this.detail(0);
+
+
+		// axios({
+        //     method: 'get',
+        //     url: 'http://localhost:8080/getDormitoryList',
+        //     headers: {
+        //         'Content-type': 'application/x-www-form-urlencoded'
+        //     }
+        // }).then(function (response) {
+        //     _this.tableData = response.data.dataList
+        //     console.log(_this.tableData)
+        // }).catch(function (error) {
+        //     console.log(error)
+        // })
     }
 };
 </script>

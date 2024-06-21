@@ -225,6 +225,7 @@ export default {
     height: 100%;
     position: fixed;
     background-size: 110% 100%;
+	overflow-y: auto; /* 使页面内容可以垂直滚动 */
 }
 
 .login-box {

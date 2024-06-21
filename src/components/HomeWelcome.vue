@@ -6,6 +6,9 @@
 		<p>
 			让学校信息查询数字化
 		</p>
+		<p>
+			Digitize school information inquiries
+		</p>
 		<br>
 		<p>
 			游客可以快速浏览学校的景点，提前做出规划
@@ -15,9 +18,6 @@
 		</p>
 		<p>
 			管理员可以高效处理宿舍公告，查看宿舍信息，管理景点信息等等
-		</p>
-		<p>
-			Digitize school information inquiries
 		</p>
 		<p>
 			Tourists can quickly browse the school's attractions and plan ahead
@@ -81,5 +81,6 @@ a {
 .home_bottom_head_img{
 	width: 150px;
 	height: 150px;
+	margin-top: 15pxF;
 }
 </style>
