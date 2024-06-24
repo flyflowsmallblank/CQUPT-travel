@@ -59,6 +59,7 @@ export default {
         return {
             loginView: true,
             userName: "",
+			userID:"",
             userType: "",
             loginForm: {
                 userName: "",
@@ -112,6 +113,7 @@ export default {
         onCancelRegist() {
             this.loginView = true;
         },
+
         onLogin(formName) {
             const _this = this;
             const currentUser = localStorage.getItem("userName");
@@ -141,16 +143,14 @@ export default {
                         })
                         .then(function (response) {
                             const status = response.data.status;
+							localStorage.setItem("userName", _this.loginForm.userName);
+							localStorage.setItem("userID",_this.userID)
                             if (status === "admin") {
-                                ele.Message.success(
-                                    "欢迎您 尊贵的管理员，即将跳转到后台管理界面"
-                                );
-                                localStorage.setItem("userName", _this.loginForm.userName);
+                                ele.Message.success("欢迎您 尊贵的管理员，即将跳转到后台管理界面");
                                 localStorage.setItem("userType", "admin");
                                 _this.$router.push("/manage");
                             } else if (status === "user") {
                                 ele.Message.success("欢迎您 尊贵的用户，即将跳转到个人主页");
-                                localStorage.setItem("userName", _this.loginForm.userName);
                                 localStorage.setItem("userType", "user");
                                 _this.$router.push("/personal");
                             } else {
@@ -191,6 +191,7 @@ export default {
                         } else {
                             ele.Message.success("注册成功 即将跳转到个人主页");
                             localStorage.setItem("userName", _this.registeForm.userName);
+							localStorage.setItem("userID",_this.userID)
                             localStorage.setItem("userType", "user");
                             _this.$router.push("/personal");
                         }

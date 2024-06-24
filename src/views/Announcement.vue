@@ -83,65 +83,65 @@ export default {
 
     },
     created() {
-        // let _this = this
-        // this.userName = window.localStorage.getItem('userName')
-        // axios({
-        //     method: 'get',
-        //     url: 'http://localhost:8080/getAnnouncementList',
-        //     headers: {
-        //         'Content-type': 'application/x-www-form-urlencoded'
-        //     }
-        // }).then(function (response) {
-        //     _this.tableData = response.data.mesgList
-        // }).catch(function (error) {
-        //     console.log(error)
-        // })
+        let _this = this
+        this.userName = window.localStorage.getItem('userName')
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/getAnnouncementList',
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded'
+            }
+        }).then(function (response) {
+            _this.tableData = response.data.mesgList
+        }).catch(function (error) {
+            console.log(error)
+        })
 
-		// Mock data
-		this.tableData = [
-			{
-				mesgID: "1",
-				mesgTitle: "New Features Release",
-				mesgDate: "2024-06-15",
-				mesgAuthor: "Admin",
-				mesgDesc: "We are excited to announce new features..."
-			},
-			{
-				mesgID: "2",
-				mesgTitle: "Maintenance Downtime",
-				mesgDate: "2024-06-10",
-				mesgAuthor: "Admin",
-				mesgDesc: "Scheduled maintenance on June 20th..."
-			},
-			{
-				mesgID: "3",
-				mesgTitle: "Community Guidelines Update",
-				mesgDate: "2024-06-05",
-				mesgAuthor: "Admin",
-				mesgDesc: "We have updated our community guidelines..."
-			},
-			{
-				mesgID: "4",
-				mesgTitle: "Summer Event",
-				mesgDate: "2024-06-01",
-				mesgAuthor: "Admin",
-				mesgDesc: "Join us for the summer event on July 1st..."
-			},
-			{
-				mesgID: "5",
-				mesgTitle: "Bug Fixes and Improvements",
-				mesgDate: "2024-05-25",
-				mesgAuthor: "Admin",
-				mesgDesc: "We have fixed several bugs and made improvements..."
-			},
-			{
-				mesgID: "6",
-				mesgTitle: "New Partnership Announcement",
-				mesgDate: "2024-05-20",
-				mesgAuthor: "Admin",
-				mesgDesc: "We are pleased to announce a new partnership..."
-			}
-		];
+		// // Mock data
+		// this.tableData = [
+		// 	{
+		// 		mesgID: "1",
+		// 		mesgTitle: "New Features Release",
+		// 		mesgDate: "2024-06-15",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "We are excited to announce new features..."
+		// 	},
+		// 	{
+		// 		mesgID: "2",
+		// 		mesgTitle: "Maintenance Downtime",
+		// 		mesgDate: "2024-06-10",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "Scheduled maintenance on June 20th..."
+		// 	},
+		// 	{
+		// 		mesgID: "3",
+		// 		mesgTitle: "Community Guidelines Update",
+		// 		mesgDate: "2024-06-05",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "We have updated our community guidelines..."
+		// 	},
+		// 	{
+		// 		mesgID: "4",
+		// 		mesgTitle: "Summer Event",
+		// 		mesgDate: "2024-06-01",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "Join us for the summer event on July 1st..."
+		// 	},
+		// 	{
+		// 		mesgID: "5",
+		// 		mesgTitle: "Bug Fixes and Improvements",
+		// 		mesgDate: "2024-05-25",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "We have fixed several bugs and made improvements..."
+		// 	},
+		// 	{
+		// 		mesgID: "6",
+		// 		mesgTitle: "New Partnership Announcement",
+		// 		mesgDate: "2024-05-20",
+		// 		mesgAuthor: "Admin",
+		// 		mesgDesc: "We are pleased to announce a new partnership..."
+		// 	}
+		// ];
     }
 };
 </script>

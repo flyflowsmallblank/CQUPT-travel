@@ -24,7 +24,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-footer>到底了</el-footer>
+            <el-footer style="width: 50%">到底了</el-footer>
         </el-container>
         <el-aside class="right_detail" width="50%">
             <el-card class="box-card">
@@ -78,128 +78,129 @@ export default {
         }
     },
     created() {
-        // let _this = this
-        // this.userName = window.localStorage.getItem('userName')
-        // axios({
-        //     method: 'get',
-        //     url: 'http://localhost:8080/getSiteList',
-        //     headers: {
-        //         'Content-type': 'application/x-www-form-urlencoded'
-        //     }
-        // }).then(function (response) {
-        //     _this.tableData = response.data.dataList
-        //     console.log(_this.tableData)
-        // }).catch(function (error) {
-        //     console.log(error)
-        // })
+        let _this = this
+        this.userName = window.localStorage.getItem('userName')
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/getSiteList',
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded'
+            }
+        }).then(function (response) {
+            _this.tableData = response.data.dataList
+		    this.detail(0);
+            console.log(_this.tableData)
+        }).catch(function (error) {
+            console.log(error)
+        })
 
-		const mockData = {
-			dataList: [
-				{
-					siteID: '1',
-					siteTitle: 'Beautiful Beach',
-					siteDate: '2024-06-18',
-					siteCity: 'Hawaii',
-					sitePrice: '$100',
-					siteDesc: 'A beautiful beach with white sand and clear blue water.',
-					siteAuthor: 'John Doe',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
-				},
-				{
-					siteID: '2',
-					siteTitle: 'Mountain Adventure',
-					siteDate: '2024-06-19',
-					siteCity: 'Rocky Mountains',
-					sitePrice: '$200',
-					siteDesc: 'An exciting mountain adventure with breathtaking views.',
-					siteAuthor: 'Jane Smith',
-					siteStar: '4',
-					sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
-				},
-				{
-					siteID: '3',
-					siteTitle: 'Historical Museum',
-					siteDate: '2024-06-20',
-					siteCity: 'New York',
-					sitePrice: '$50',
-					siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
-					siteAuthor: 'Alice Johnson',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
-				},
-				{
-					siteID: '4',
-					siteTitle: 'Beautiful Beach',
-					siteDate: '2024-06-18',
-					siteCity: 'Hawaii',
-					sitePrice: '$100',
-					siteDesc: 'A beautiful beach with white sand and clear blue water.',
-					siteAuthor: 'John Doe',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
-				},
-				{
-					siteID: '5',
-					siteTitle: 'Mountain Adventure',
-					siteDate: '2024-06-19',
-					siteCity: 'Rocky Mountains',
-					sitePrice: '$200',
-					siteDesc: 'An exciting mountain adventure with breathtaking views.',
-					siteAuthor: 'Jane Smith',
-					siteStar: '4',
-					sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
-				},
-				{
-					siteID: '6',
-					siteTitle: 'Historical Museum',
-					siteDate: '2024-06-20',
-					siteCity: 'New York',
-					sitePrice: '$50',
-					siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
-					siteAuthor: 'Alice Johnson',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
-				},
-				{
-					siteID: '7',
-					siteTitle: 'Beautiful Beach',
-					siteDate: '2024-06-18',
-					siteCity: 'Hawaii',
-					sitePrice: '$100',
-					siteDesc: 'A beautiful beach with white sand and clear blue water.',
-					siteAuthor: 'John Doe',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
-				},
-				{
-					siteID: '8',
-					siteTitle: 'Mountain Adventure',
-					siteDate: '2024-06-19',
-					siteCity: 'Rocky Mountains',
-					sitePrice: '$200',
-					siteDesc: 'An exciting mountain adventure with breathtaking views.',
-					siteAuthor: 'Jane Smith',
-					siteStar: '4',
-					sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
-				},
-				{
-					siteID: '9',
-					siteTitle: 'Historical Museum',
-					siteDate: '2024-06-20',
-					siteCity: 'New York',
-					sitePrice: '$50',
-					siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
-					siteAuthor: 'Alice Johnson',
-					siteStar: '5',
-					sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
-				}
-			]
-		};
-
-		this.tableData = mockData.dataList;
-		console.log(this.tableData);
-		this.detail(0);
+		// const mockData = {
+		// 	dataList: [
+		// 		{
+		// 			siteID: '1',
+		// 			siteTitle: 'Beautiful Beach',
+		// 			siteDate: '2024-06-18',
+		// 			siteCity: 'Hawaii',
+		// 			sitePrice: '$100',
+		// 			siteDesc: 'A beautiful beach with white sand and clear blue water.',
+		// 			siteAuthor: 'John Doe',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
+		// 		},
+		// 		{
+		// 			siteID: '2',
+		// 			siteTitle: 'Mountain Adventure',
+		// 			siteDate: '2024-06-19',
+		// 			siteCity: 'Rocky Mountains',
+		// 			sitePrice: '$200',
+		// 			siteDesc: 'An exciting mountain adventure with breathtaking views.',
+		// 			siteAuthor: 'Jane Smith',
+		// 			siteStar: '4',
+		// 			sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
+		// 		},
+		// 		{
+		// 			siteID: '3',
+		// 			siteTitle: 'Historical Museum',
+		// 			siteDate: '2024-06-20',
+		// 			siteCity: 'New York',
+		// 			sitePrice: '$50',
+		// 			siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
+		// 			siteAuthor: 'Alice Johnson',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
+		// 		},
+		// 		{
+		// 			siteID: '4',
+		// 			siteTitle: 'Beautiful Beach',
+		// 			siteDate: '2024-06-18',
+		// 			siteCity: 'Hawaii',
+		// 			sitePrice: '$100',
+		// 			siteDesc: 'A beautiful beach with white sand and clear blue water.',
+		// 			siteAuthor: 'John Doe',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
+		// 		},
+		// 		{
+		// 			siteID: '5',
+		// 			siteTitle: 'Mountain Adventure',
+		// 			siteDate: '2024-06-19',
+		// 			siteCity: 'Rocky Mountains',
+		// 			sitePrice: '$200',
+		// 			siteDesc: 'An exciting mountain adventure with breathtaking views.',
+		// 			siteAuthor: 'Jane Smith',
+		// 			siteStar: '4',
+		// 			sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
+		// 		},
+		// 		{
+		// 			siteID: '6',
+		// 			siteTitle: 'Historical Museum',
+		// 			siteDate: '2024-06-20',
+		// 			siteCity: 'New York',
+		// 			sitePrice: '$50',
+		// 			siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
+		// 			siteAuthor: 'Alice Johnson',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
+		// 		},
+		// 		{
+		// 			siteID: '7',
+		// 			siteTitle: 'Beautiful Beach',
+		// 			siteDate: '2024-06-18',
+		// 			siteCity: 'Hawaii',
+		// 			sitePrice: '$100',
+		// 			siteDesc: 'A beautiful beach with white sand and clear blue water.',
+		// 			siteAuthor: 'John Doe',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.d53ab0005d83bbc3f2d8c12c7ee21b97?rik=%2fIYrl5jFQKqAJA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0204.jpg_wh1200.jpg&ehk=R561g0BgKqnIJQccUg8x%2faFKzO5O5HfSPMCDa3YTsi8%3d&risl=&pid=ImgRaw&r=0'
+		// 		},
+		// 		{
+		// 			siteID: '8',
+		// 			siteTitle: 'Mountain Adventure',
+		// 			siteDate: '2024-06-19',
+		// 			siteCity: 'Rocky Mountains',
+		// 			sitePrice: '$200',
+		// 			siteDesc: 'An exciting mountain adventure with breathtaking views.',
+		// 			siteAuthor: 'Jane Smith',
+		// 			siteStar: '4',
+		// 			sitePicture: 'https://img.zcool.cn/community/01f23a5bc82cada801213dea4a5b3f.jpg@1280w_1l_2o_100sh.jpg'
+		// 		},
+		// 		{
+		// 			siteID: '9',
+		// 			siteTitle: 'Historical Museum',
+		// 			siteDate: '2024-06-20',
+		// 			siteCity: 'New York',
+		// 			sitePrice: '$50',
+		// 			siteDesc: 'A museum showcasing historical artifacts and exhibitions.',
+		// 			siteAuthor: 'Alice Johnson',
+		// 			siteStar: '5',
+		// 			sitePicture: 'https://th.bing.com/th/id/R.59048dfcc0ea2e183089246419e11b90?rik=BfOCYrwhFp4YxA&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50036%2f0236.jpg_wh1200.jpg&ehk=57PvzqCzkp9KyI1VpGTsjLMbjcShj7x7vsiS2B9KsIw%3d&risl=&pid=ImgRaw&r=0'
+		// 		}
+		// 	]
+		// };
+		//
+		// this.tableData = mockData.dataList;
+		// console.log(this.tableData);
+		// this.detail(0);
     }
 };
 </script>
@@ -241,6 +242,7 @@ export default {
 
 .right_detail{
 	position: fixed;
+	top: 60px;
 	right: 0;
 }
 </style>

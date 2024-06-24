@@ -11,7 +11,7 @@
         </div>
         <div class="header-user">
             <el-popover placement="top-start" title="" width="60" trigger="hover" content="">
-            <div class="personal-wrapper" v-if="userName != ''">
+            <div class="personal-wrapper">
                 <div class="personal-item" @click="login()">个人主页</div>
                 <div class="personal-item" @click="logout()">退出账号</div>
             </div>
@@ -20,7 +20,6 @@
                     <el-avatar v-else class="login-icon" icon="el-icon-user-solid"></el-avatar>
                 </a>
             </el-popover>
-
         </div>
     </div>
     <router-view style="padding-top: 60px" />
@@ -74,6 +73,7 @@ el-menu-item {
     top: 10px;
     height: 50px;
     line-height: 50px;
+	cursor: pointer;
 }
 
 #app {

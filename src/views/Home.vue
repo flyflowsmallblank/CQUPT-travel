@@ -25,26 +25,8 @@ body {
     margin: 0;
 }
 
-html,
-body,
-#app {
-    text-align: left;
-}
-
-.home-logo {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    height: 80px;
-}
-
 .home {
     text-align: center;
-}
-
-.container{
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .container span{
@@ -53,7 +35,7 @@ body,
 }
 
 .home_banner{
-	margin-top: 70px;
+	margin-top: 50px;
 }
 
 </style>
