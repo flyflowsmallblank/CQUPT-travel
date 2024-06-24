@@ -58,6 +58,14 @@ el-menu-item {
     z-index: 10;
 }
 
+.header-logo-text{
+	height: 50px;
+	position: fixed;
+	left: 10px;
+	top: 5px;
+	z-index: 10;
+}
+
 .login-icon {
     z-index: 1;
     width: 40px;

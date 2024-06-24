@@ -211,6 +211,20 @@ export default {
 					console.log(error)
 				})
 			}
+		},
+		getDormitoryList(){
+			axios({
+				method: 'get',
+				url: 'http://localhost:8080/getDormitaryList',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				}
+			}).then(function (response) {
+				_this.tableData = response.data.dataList
+				console.log(_this.tableData)
+			}).catch(function (error) {
+				console.log(error)
+			})
 		}
 	},
 	created() {
@@ -270,7 +284,7 @@ export default {
 		// this.tableData = mockData.dataList;
 		// console.log(this.tableData);
 		// this.detail(0);
-
+		this.getDormitoryList()
 		this.getCommentList()
 	}
 };
