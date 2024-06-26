@@ -16,7 +16,7 @@
                 <div class="personal-item" @click="logout()">退出账号</div>
             </div>
                 <a @click="login()" slot="reference">
-                    <img v-if="userProfile" class="login-icon" :src="userProfile" />
+                    <img v-if="userProfile" class="login-icon" src="./assets/user1.svg" />
                     <el-avatar v-else class="login-icon" icon="el-icon-user-solid"></el-avatar>
                 </a>
             </el-popover>
@@ -71,7 +71,6 @@ el-menu-item {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: solid 2px lightgray;
     cursor: pointer;
 }
 

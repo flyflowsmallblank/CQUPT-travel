@@ -204,9 +204,7 @@ export default {
 						}
 					)
 				}).then(function (response) {
-					if (response.status === 200) {
-						this.getCommentList()
-					}
+					this.getCommentList()
 					console.log(_this.tableData)
 				}).catch(function (error) {
 					console.log(error)
