@@ -82,7 +82,7 @@
 							<el-input class="comment_input_place" v-model="newComment" type="textarea"
 									  placeholder="留下你的精彩想法吧"
 									  :autosize="{ minRows: 5, maxRows: 10 }"></el-input>
-							<el-button type="primary" @click="addComment">Submit</el-button>
+							<el-button type="primary" @click="addComment">提交</el-button>
 						</div>
 					</el-card>
 
@@ -183,8 +183,9 @@ export default {
 				console.log(error)
 			})
 		},
-		addComment(newComment) {
-			if (this.newComment.content) {
+		addComment() {
+			console.log(this.newComment)
+			if (this.newComment) {
 				if (this.curUser.userID && this.curUser.userID === '') {
 					ele.Message.error("您未登录，正在跳转到登录界面");
 					this.$router.push('/login')
@@ -221,16 +222,43 @@ export default {
 				}
 			}).then(function (response) {
 				_this.tableData = response.data.dataList
-				console.log(_this.tableData)
+				this.detail(0).bind(this);
+				console.log(this.tableData);
+				this.getCommentList().bind(this);
 			}).catch(function (error) {
 				console.log(error)
 			})
 		}
 	},
 	created() {
-		let _this = this;
 		this.curUser.userID = window.localStorage.getItem('userID');
 		this.curUser.userName = window.localStorage.getItem('userName');
+
+		const mockData = {
+			"code": 0,
+				"msg": "ok",
+				"data": [
+				{
+					"dormitoryID": 2,
+					"dormitoryName": "1",
+					"dormitoryDesc": "1",
+					"dormitoryAddress": "1",
+					"dormitoryPrice": 1,
+					"dormitoryStar": 1,
+					"dormitoryPhone": "1",
+					"dormitoryRemain": 1,
+					"dormitoryPicture": "1",
+					"dormitoryAuthor": "1",
+					"createdAt": "2024-06-24T08:27:11+08:00",
+					"updatedAt": "2024-06-24T08:27:11+08:00"
+				}
+			]
+		}
+
+		this.tableData = mockData.data
+		this.detail(0)
+		console.log(this.tableData);
+
 
 		// const mockData = {
 		// 	"status": "success",
@@ -285,7 +313,6 @@ export default {
 		// console.log(this.tableData);
 		// this.detail(0);
 		this.getDormitoryList()
-		this.getCommentList()
 	}
 };
 </script>

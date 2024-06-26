@@ -62,8 +62,6 @@
                             <el-button type="success" icon="el-icon-check" @click="onSubmitEdit()" :disabled=editable>提交修改</el-button>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane class="panel" label="订单管理" name="second">暂无订单</el-tab-pane>
-                    <el-tab-pane class="panel" label="游记管理" name="third">暂无游记</el-tab-pane>
                     <el-tab-pane class="panel" label="账号管理" name="fourth">
                         <el-button type="danger" icon="el-icon-s-promotion" @click="quit()">退出账号</el-button>
                     </el-tab-pane>

@@ -27,6 +27,8 @@ body {
 
 .home {
     text-align: center;
+	background: linear-gradient(to bottom right, rgba(255, 241, 235, 0.5) 0%, rgba(172, 224, 249, 0.5) 100%);
+
 }
 
 .container span{
