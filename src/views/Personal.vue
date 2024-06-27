@@ -6,22 +6,22 @@
 					<el-tab-pane class="panel" label="用户信息" name="first">
 						<el-form label-width="80px" style="width: 50%; margin: 0 auto;">
 							<el-form-item label="用户名">
-								<el-input v-model="userInfo.userName" :disabled="editable"></el-input>
+								<el-input v-model="userInfo.UserName" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="密码">
-								<el-input v-model="userInfo.userPassword" :disabled="editable"></el-input>
+								<el-input v-model="userInfo.UserPassword" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="联系方式">
-								<el-input v-model="userInfo.userPhone" :disabled="editable"></el-input>
+								<el-input v-model="userInfo.UserPhone" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="性别">
-								<el-input v-model="userInfo.userSex" :disabled="editable"></el-input>
+								<el-input v-model="userInfo.UserSex" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="年龄">
-								<el-input v-model="userInfo.userAge" :disabled="editable"></el-input>
+								<el-input v-model="userInfo.UserAge" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="个人介绍">
-								<el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8}" v-model="userInfo.userDesc" :disabled="editable"></el-input>
+								<el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8}" v-model="userInfo.UserDesc" :disabled="editable"></el-input>
 							</el-form-item>
 							<el-form-item label="修改头像" v-if="!editable">
 								<el-upload
@@ -99,7 +99,7 @@ export default {
 		onSubmitEdit() {
 			this.$refs.upload.submit();
 		},
-		onSuccess(response) {
+		onSuccess: function (response){
 			if (response.status === 'success') {
 				this.userInfo.userProfile = response.imgURL;
 				let _this = this;
@@ -129,7 +129,7 @@ export default {
 						_this.userInfo.userName = _this.userName;
 					} else {
 						Message.success('修改成功');
-						_this.userInfo = response.data.userList;
+						_this.userInfo = response.data.data;
 						_this.userName = _this.userInfo.userName;
 						window.localStorage.setItem('userName', _this.userName);
 						_this.editable = true;
@@ -166,8 +166,9 @@ export default {
 				if (status === 'failed') {
 					Message.error('加载用户信息失败');
 				} else {
-					_this.userInfo = response.data.userList;
-					window.localStorage.setItem('userProfile', response.data.userList.userProfile);
+					_this.userInfo = response.data.data;
+					window.localStorage.setItem('userProfile', response.data.data.userProfile);
+					console.log(_this.userInfo)
 				}
 			}).catch(function (error) {
 				console.log(error);

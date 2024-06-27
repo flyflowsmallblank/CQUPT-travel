@@ -2,7 +2,6 @@
 <div>
     <div class="top-bar">
         <el-button type="primary" icon="el-icon-edit" @click="addSite()">添加景点</el-button>
-        <el-button :span="1" icon="el-icon-search">搜索</el-button>
     </div>
     <el-col :span="23" class="data-table">
         <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 100%">
@@ -45,12 +44,20 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="140px;">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' @confirm="handleDelete(scope.$index, scope.row)" icon="el-icon-info" icon-color="red" title="确定删除吗？">
-                        <el-button slot="reference" size="mini" type="danger" style="margin-left: 5px;">删除</el-button>
-                    </el-popconfirm>
-                </template>
+				<template slot-scope="scope">
+					<div class="button-group">
+						<el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+						<el-popconfirm
+							confirm-button-text='删除'
+							cancel-button-text='取消'
+							@confirm="handleDelete(scope.$index, scope.row)"
+							icon="el-icon-info"
+							icon-color="red"
+							title="确定删除吗？">
+							<el-button slot="reference" size="mini" type="danger" style="margin-left: -60px;">删除</el-button>
+						</el-popconfirm>
+					</div>
+				</template>
             </el-table-column>
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pagesize" background layout="total, sizes, prev, pager, next, jumper" :total="tableData.length" style="padding-top:20px">
@@ -184,37 +191,35 @@ export default {
             })
         },
         onSuccess: function (response) {
-            if (response.status === "success") {
-                this.form.sitePicture = response.imgURL
-                let _this = this
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:8080/addSite',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    data: qs.stringify({
-                        siteTitle: this.form.siteTitle,
-                        siteCity: this.form.siteCity,
-                        siteDesc: this.form.siteDesc,
-                        sitePicture: this.form.sitePicture,
-                        siteAuthor: this.userName
-                    })
-                }).then(function (response) {
-                    let status = response.data.status
-                    if (status == 'success') {
-                        ele.Message.success('创建景点成功')
-                        _this.tableData = response.data.dataList
-                        _this.dialogVisible = false
-                    } else {
-                        ele.Message.error("创建景点失败")
-                    }
-                }).catch(function (error) {
-                    console.log(error)
-                })
-            } else {
-                ele.Message.error("图像上传失败，请重试")
-            }
+			console.log(response.data)
+			this.form.sitePicture = response.data.imgUrl
+			let _this = this
+			axios({
+				method: 'post',
+				url: 'http://localhost:8080/addSite',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				},
+				data: qs.stringify({
+					siteTitle: this.form.siteTitle,
+					siteCity: this.form.siteCity,
+					siteDesc: this.form.siteDesc,
+					sitePicture: this.form.sitePicture,
+					siteAuthor: this.userName
+				})
+			}).then(function (response) {
+				let status = response.data.data.status
+				if (status === 'success') {
+					ele.Message.success('创建景点成功')
+					_this.tableData = response.data.data
+					_this.dialogVisible = false
+					window.location.reload();
+				} else {
+					ele.Message.error("创建景点失败")
+				}
+			}).catch(function (error) {
+				console.log(error)
+			})
         },
         handleModifySite(formName) {
             this.$refs[formName].validate((valid) => {
@@ -235,10 +240,11 @@ export default {
                             siteAuthor: this.userName
                         })
                     }).then(function (response) {
-                        let status = response.data.status
+                        let status = response.data.data.status
                         ele.Message.success('更新景点数据成功')
-                        _this.tableData = response.data.dataList
+                        _this.tableData = response.data.data
                         _this.dialogVisible = false
+						window.location.reload();
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -261,7 +267,8 @@ export default {
                 })
             }).then(function (response) {
                 ele.Message.success('更新数据成功')
-                _this.tableData = response.data.dataList
+                _this.tableData = response.data.data
+				window.location.reload();
             }).catch(function (error) {
                 console.log(error)
             })
@@ -281,7 +288,7 @@ export default {
                     'Content-type': 'application/x-www-form-urlencoded'
                 }
             }).then(function (response) {
-                _this.tableData = response.data.dataList
+                _this.tableData = response.data.data
             }).catch(function (error) {
                 console.log(error)
             })

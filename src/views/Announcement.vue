@@ -1,5 +1,5 @@
 <template>
-<div class="hotel-main">
+<div class="dormitory-main">
     <el-col :span="23" class="mesgList-table">
         <el-table :data="tableData.slice((currentPage - 1)* pageSize, currentPage * pageSize)" style="width: 100%">
             <el-table-column label="编号" width="100px">
@@ -25,7 +25,7 @@
             </el-table-column>
             <el-table-column label="发布时间" width="200px">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.mesgDate }}</span>
+                    <span>{{ scope.row.updatedAt }}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -50,7 +50,7 @@ const qs = require('qs')
 const ele = require('element-ui')
 
 export default {
-    name: 'hotel_page',
+    name: 'dormitory_page',
     data() {
         return {
             currentPage: 1,
@@ -75,7 +75,7 @@ export default {
         },
         showDetail(index) {
             this.msgTitle = this.tableData[index].mesgTitle
-            this.msgDate = this.tableData[index].mesgDate
+            this.updatedAt = this.tableData[index].updatedAt
             this.msgDesc = this.tableData[index].mesgDesc
             this.msgAuthor = this.tableData[index].mesgAuthor
             this.dialogVisible = true
@@ -92,7 +92,7 @@ export default {
                 'Content-type': 'application/x-www-form-urlencoded'
             }
         }).then(function (response) {
-            _this.tableData = response.data.mesgList
+            _this.tableData = response.data.data
         }).catch(function (error) {
             console.log(error)
         })
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style>
-.hotel-main {
+.dormitory-main {
     height: 100%;
     padding: 30px;
     margin-top: 20px;

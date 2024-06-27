@@ -33,7 +33,7 @@
 										<h2>{{ scope.row.dormitoryName }}</h2>
 										<p>
 											<i style="color:#42b983;" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{
-												scope.row.dormitoryDate
+												scope.row.createdAt
 											}}
 										</p>
 										<p>
@@ -86,16 +86,16 @@
 						</div>
 					</el-card>
 
-					<el-card class="comment-card" v-for="comment in comments" :key="comment.id">
+					<el-card class="comment-card" v-for="comment in comments" :key="comment.commentID">
 						<div class="comment-header">
 							<el-avatar :size="40" :src="require('@/assets/user.svg')"></el-avatar>
 							<div class="comment-info">
-								<h3>{{ comment.username }}</h3>
-								<p class="comment-time">{{ comment.time }}</p>
+								<h3>{{ comment.commentAuthor }}</h3>
+								<p class="comment-time">{{ comment.createdAt }}</p>
 							</div>
 						</div>
 						<div class="comment-body">
-							<p>{{ comment.content }}</p>
+							<p>{{ comment.commentText }}</p>
 						</div>
 					</el-card>
 				</div>
@@ -157,7 +157,7 @@ export default {
 		detail(index) {
 			this.dormitoryID = this.tableData[index].dormitoryID;
 			this.dormitoryName = this.tableData[index].dormitoryName;
-			this.dormitoryDate = this.tableData[index].dormitoryDate;
+			this.dormitoryDate = this.tableData[index].createdAt;
 			this.dormitoryPrice = this.tableData[index].dormitoryPrice;
 			this.dormitoryAddress = this.tableData[index].dormitoryAddress;
 			this.dormitoryPicture = this.tableData[index].dormitoryPicture;
@@ -166,97 +166,74 @@ export default {
 			this.dormitoryStar = parseFloat(this.tableData[index].dormitoryStar);
 		},
 		getCommentList() {
+			let _this = this;
+			const queryParams = qs.stringify({
+				dormitoryID: this.dormitoryID
+			});
 			axios({
 				method: 'get',
-				url: 'http://localhost:8080/getCommentList',
+				url: `http://localhost:8080/getCommentList?${queryParams}`,
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				},
-				data: qs.stringify({
-					userID: this.userID,
-					dormitoryID: this.dormitoryID
-				}),
 			}).then(function (response) {
-				_this.comments = response.data.dataList
-				console.log(_this.comments)
+				_this.comments = response.data.data;
+				console.log(_this.comments);
 			}).catch(function (error) {
-				console.log(error)
-			})
+				console.log(error);
+			});
 		},
-		addComment() {
-			console.log(this.newComment)
+		addComment(newComment) {
+			let _this = this
 			if (this.newComment) {
 				if (this.curUser.userID && this.curUser.userID === '') {
 					ele.Message.error("您未登录，正在跳转到登录界面");
 					this.$router.push('/login')
 				}
+				console.log(this.dormitoryID)
 				axios({
 					method: 'post',
-					url: 'http://localhost:8080/sendComment',
+					url: 'http://localhost:8080/comment',
 					headers: {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
 					data: qs.stringify(
 						{
-							userID: this.curUser.userID,
-							dormitoryID: this.dormitoryID,
-							comment: this.newComment
+							authorId: _this.curUser.userID,
+							dormitoryID: _this.dormitoryID,
+							comment: _this.newComment
 						}
 					)
 				}).then(function (response) {
-					this.getCommentList()
-					console.log(_this.tableData)
+					window.location.reload();
 				}).catch(function (error) {
 					console.log(error)
 				})
 			}
 		},
-		getDormitoryList(){
+		getDormitoryList() {
+			let _this = this;
 			axios({
 				method: 'get',
-				url: 'http://localhost:8080/getDormitaryList',
+				url: 'http://localhost:8080/getDormitoryList',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				}
 			}).then(function (response) {
-				_this.tableData = response.data.dataList
-				this.detail(0).bind(this);
-				console.log(this.tableData);
-				this.getCommentList().bind(this);
+				_this.tableData = response.data.data;
+				console.log(111);
+				_this.detail(0); // 设置 dormitoryID
+				_this.getCommentList(); // 在设置 dormitoryID 后调用 getCommentList
+				console.log(_this.tableData);
 			}).catch(function (error) {
-				console.log(error)
-			})
+				console.log(error);
+			});
 		}
 	},
 	created() {
+		let _this = this;
 		this.curUser.userID = window.localStorage.getItem('userID');
 		this.curUser.userName = window.localStorage.getItem('userName');
-
-		const mockData = {
-			"code": 0,
-				"msg": "ok",
-				"data": [
-				{
-					"dormitoryID": 2,
-					"dormitoryName": "1",
-					"dormitoryDesc": "1",
-					"dormitoryAddress": "1",
-					"dormitoryPrice": 1,
-					"dormitoryStar": 1,
-					"dormitoryPhone": "1",
-					"dormitoryRemain": 1,
-					"dormitoryPicture": "1",
-					"dormitoryAuthor": "1",
-					"createdAt": "2024-06-24T08:27:11+08:00",
-					"updatedAt": "2024-06-24T08:27:11+08:00"
-				}
-			]
-		}
-
-		this.tableData = mockData.data
-		this.detail(0)
-		console.log(this.tableData);
-
 
 		// const mockData = {
 		// 	"status": "success",

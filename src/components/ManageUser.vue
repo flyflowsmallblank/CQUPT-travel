@@ -2,7 +2,6 @@
 <div class='manageUser-main'>
     <el-row class="manageUser-toolbar">
         <el-button type="primary" icon="el-icon-plus" @click="addUser()">添加用户</el-button>
-        <el-button :span="1" icon="el-icon-search">搜索</el-button>
         <!-- <el-col :span="4" :offset="0"><el-tag style="margin-left:300px">用户信息管理 | 数据无价 小心操作</el-tag></el-col> -->
     </el-row>
     <el-col :span="23" class="data-table">
@@ -54,16 +53,16 @@
                     <span>{{ scope.row.userProfile.slice(0, 50) + '...'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" width="140px;">
+            <el-table-column label="状态" width="100px;">
                 <template slot-scope="scope">
                     <el-tag type="success" style="margin-top: -5px;" size="small">{{ scope.row.userStatus }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" :span="1">
+            <el-table-column label="操作" :span="1" width="140px;">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' @confirm="handleDelete(scope.$index, scope.row)" icon="el-icon-info" icon-color="red" title="确定删除该用户吗？">
-                        <el-button slot="reference" size="mini" type="danger" style="margin-left: 5px;">删除</el-button>
+                        <el-button slot="reference" size="mini" type="danger"  style="margin-left: -60px;">删除</el-button>
                     </el-popconfirm>
                 </template>
             </el-table-column>
@@ -98,6 +97,9 @@
             <el-form-item label="介绍" prop="userDesc">
                 <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8}" placeholder="请输入内容" v-model="form.userDesc"></el-input>
             </el-form-item>
+			<el-form-item label="权限" prop="userStatus">
+				<el-input v-model="form.userStatus"></el-input>
+			</el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -184,47 +186,38 @@ export default {
         }
     },
     methods: {
-        handleModifyUser(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    console.log(this.form)
-                    let _this = this
-                    axios({
-                        method: 'post',
-                        url: 'http://localhost:8080/updateUserAdmin',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        data: qs.stringify({
-                            userID: this.currentUserID,
-                            userNamePrev: this.prevUserName,
-                            userName: this.form.userName,
-                            userPassword: this.form.userPassword,
-                            userSex: this.form.userSex,
-                            userAge: this.form.userAge,
-                            userPhone: this.form.userPhone,
-                            userDesc: this.form.userDesc,
-                            userProfile: this.form.userProfile,
-                            userStatus: this.form.userStatus
-                        })
-                    }).then(function (response) {
-                        let status = response.data.status
-                        if (status == 'failed') {
-                            ele.Message.error("该用户名已经被别人占用啦，换一个吧~")
-                        } else {
-                            ele.Message.success('更新用户数据成功')
-                            _this.tableData = response.data.userList
-                            _this.dialogVisible = false
-                        }
-                    }).catch(function (error) {
-                        console.log(error)
-                    })
-                } else {
-                    this.dialogVisible = true
-                    return false
-                }
-            })
-        },
+		handleModifyUser(formName) {
+			this.$refs[formName].validate((valid) => {
+				if (valid) {
+					axios.post('http://localhost:8080/updateUserAdmin', qs.stringify({
+						userID: this.currentUserID,
+						userNamePrev: this.prevUserName,
+						userName: this.form.userName,
+						userPassword: this.form.userPassword,
+						userSex: this.form.userSex,
+						userAge: this.form.userAge,
+						userPhone: this.form.userPhone,
+						userDesc: this.form.userDesc,
+						userProfile: this.form.userProfile,
+						userStatus: this.form.userStatus
+					}), {
+						headers: { 'Content-type': 'application/x-www-form-urlencoded' }
+					}).then(response => {
+						if (response.data.code !== 0) {
+							ele.Message.error("该用户名已经被别人占用啦，换一个吧~");
+						} else {
+							ele.Message.success('更新用户数据成功');
+							window.location.reload();  // 添加这行代码来刷新页面
+						}
+					}).catch(error => {
+						console.log(error);
+					});
+				} else {
+					this.dialogVisible = true;
+					return false;
+				}
+			});
+		},
         handleEdit(index, row) {
             this.dialogTitle = "修改用户信息"
             this.dialogVisible = true
@@ -253,8 +246,8 @@ export default {
                 })
             }).then(function (response) {
                 ele.Message.success('更新用户数据成功')
-                _this.tableData = response.data.userList
-            }).catch(function (error) {
+				window.location.reload();
+			}).catch(function (error) {
                 console.log(error)
             })
         },
@@ -293,14 +286,16 @@ export default {
                             userDesc: this.form.userDesc
                         })
                     }).then(function (response) {
-                        let status = response.data.status
-                        if (status == 'failed') {
+                        let code = response.data.code
+						console.log(code)
+                        if (code !== 0) {
                             ele.Message.error("该用户名已经被别人占用啦，换一个吧~")
                         } else {
-                            ele.Message.success('更新用户数据成功')
-                            _this.tableData = response.data.userList
+                            ele.Message.success('新建用户成功')
+                            _this.tableData = response.data.data.userList
                             _this.dialogVisible = false
-                        }
+							window.location.reload();
+						}
                     }).catch(function (error) {
                         console.log(error)
                     })

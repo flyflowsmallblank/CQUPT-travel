@@ -17,7 +17,6 @@
                                 <div class="grid-cont-right"  @click=detail(scope.$index)>
                                     <h2>{{ scope.row.siteTitle }}</h2>
                                     <p><i style="color:#42b983;" class="el-icon-location">景点地址</i>&nbsp;&nbsp;{{ scope.row.siteCity }}</p>
-                                    <p><i style="color:#42b983;" class="el-icon-location">景点评分</i>&nbsp;&nbsp;{{ scope.row.siteStar }}</p>
                                 </div>
                             </el-col>
                         </el-row>
@@ -35,7 +34,6 @@
                     <h2>{{ this.siteTitle }}</h2>
                     <p><i style="color:#42b983;" class="el-icon-location">景点地址</i>&nbsp;&nbsp;&nbsp;{{ this.siteCity }}</p>
                     <p><i style="color:#42b983;" class="el-icon-s-ticket">景点介绍</i>&nbsp;&nbsp;&nbsp;{{ this.siteDesc }}</p>
-                    <p><i style="color:#42b983;" class="el-icon-location">景点评分</i>&nbsp;&nbsp;&nbsp;{{ this.siteStar }}</p>
                     <img :src=this.sitePicture slot="error" style="width:80%;" />
                 </div>
             </el-card>
@@ -87,8 +85,7 @@ export default {
                 'Content-type': 'application/x-www-form-urlencoded'
             }
         }).then(function (response) {
-            _this.tableData = response.data.dataList
-		    this.detail(0);
+            _this.tableData = response.data.data
             console.log(_this.tableData)
         }).catch(function (error) {
             console.log(error)

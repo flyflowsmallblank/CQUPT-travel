@@ -15,7 +15,7 @@
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
                         <p><i style="color:rgb(64,158,255);" class="el-icon-info">宿舍名称</i>&nbsp;&nbsp;{{ scope.row.dormitoryName }}</p>
-                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{ scope.row.dormitoryDate }}</p>
+                        <p><i style="color:rgb(64,158,255);" class="el-icon-s-promotion">发布时间</i>&nbsp;&nbsp;{{ scope.row.createdAt }}</p>
                         <p><i style="color:rgb(64,158,255);" class="el-icon-s-ticket">宿舍价格</i>&nbsp;&nbsp;{{ scope.row.dormitoryPrice }}</p>
                         <p><i style="color:rgb(64,158,255);" class="el-icon-s-comment">宿舍介绍</i>&nbsp;&nbsp;{{ scope.row.dormitoryDesc }}</p>
                         <img :src="scope.row.dormitoryPicture" style="height:300px" />
@@ -35,7 +35,7 @@
                     <span style="margin-left: 10px">{{ scope.row.dormitoryPrice }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="联系电话" width="140px" sortable>
+            <el-table-column label="联系电话" width="200px" sortable>
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.dormitoryPhone }}</span>
                 </template>
@@ -60,16 +60,16 @@
                     <span style="margin-left: 10px">{{ scope.row.dormitoryAuthor }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="发布时间" width="200px" sortable>
+            <el-table-column label="发布时间" width="250px" sortable>
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.dormitoryDate }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="140px;" fixed="right">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' @confirm="handleDelete(scope.$index, scope.row)" icon="el-icon-info" icon-color="red" title="确定删除吗？">
-                        <el-button slot="reference" size="mini" type="danger" style="margin-left: 5px;">删除</el-button>
+                        <el-button slot="reference" size="mini" type="danger" style="margin-left: -60px;">删除</el-button>
                     </el-popconfirm>
                 </template>
             </el-table-column>
@@ -207,7 +207,11 @@ export default {
                     'Content-type': 'application/x-www-form-urlencoded'
                 }
             }).then(function (response) {
-                _this.tableData = response.data.dataList
+				if (Array.isArray(response.data.data)) {
+					_this.tableData = response.data.data;
+				} else {
+					console.error('API 响应的数据结构不正确:', response.data);
+				}
             }).catch(function (error) {
                 console.log(error)
             })
@@ -294,11 +298,12 @@ export default {
                         dormitoryAuthor: this.userName
                     })
                 }).then(function (response) {
-                    let status = response.data.status
+                    let status = response.data.data.status
                     if (status == 'success') {
                         ele.Message.success('创建宿舍成功')
-                        _this.tableData = response.data.dataList
+                        _this.tableData = response.data.data
                         _this.dialogVisible = false
+						window.location.reload();
                     } else {
                         ele.Message.error("创建宿舍失败")
                     }
@@ -332,10 +337,11 @@ export default {
                             dormitoryAuthor: this.userName
                         })
                     }).then(function (response) {
-                        let status = response.data.status
+                        let status = response.data.data.status
                         ele.Message.success('更新宿舍数据成功')
-                        _this.tableData = response.data.dataList
+                        _this.tableData = response.data.data
                         _this.dialogVisible = false
+						window.location.reload();
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -358,7 +364,9 @@ export default {
                 })
             }).then(function (response) {
                 ele.Message.success('更新数据成功')
-                _this.tableData = response.data.dataList
+                _this.tableData = response.data.data
+				console.log(_this.tableData)
+				window.location.reload();
             }).catch(function (error) {
                 console.log(error)
             })

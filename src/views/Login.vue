@@ -142,9 +142,9 @@ export default {
                             }),
                         })
                         .then(function (response) {
-                            const status = response.data.status;
+                            const status = response.data.data.status;
 							localStorage.setItem("userName", _this.loginForm.userName);
-							localStorage.setItem("userID",_this.userID)
+							localStorage.setItem("userID",response.data.data.userID)
                             if (status === "admin") {
                                 ele.Message.success("欢迎您 尊贵的管理员，即将跳转到后台管理界面");
                                 localStorage.setItem("userType", "admin");
@@ -185,7 +185,7 @@ export default {
                         }),
                     })
                     .then(function (response) {
-                        let status = response.data.status;
+                        let status = response.data.data.status;
                         if (status == "failed") {
                             ele.Message.error("该用户名已经被别人占用啦，换一个吧~");
                         } else {

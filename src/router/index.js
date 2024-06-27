@@ -30,8 +30,8 @@ const routes = [{
 		component: () => import('../views/Site.vue')
 	},
 	{
-		path: '/hotel',
-		name: 'Hotel',
+		path: '/dormitory',
+		name: 'dormitory',
 		component: () => import('../views/Dormitory.vue')
 	},
 	{

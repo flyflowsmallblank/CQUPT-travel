@@ -32,7 +32,7 @@ body {
 }
 
 .container span{
-	font-size: 50px;
+	font-size: 16px;
 	padding-left: 30px;
 }
 

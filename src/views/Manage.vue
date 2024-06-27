@@ -5,8 +5,7 @@
         <ManageAnnouncement v-if="index === '/manageAnnouncement'" />
         <ManageUser v-else-if="index === '/manageUser'" />
         <ManageSite v-else-if="index === '/manageSite'" />
-        <ManageProduct v-else-if="index === '/manageProduct'" />
-        <ManageHotel v-else-if="index === '/manageHotel'" />
+        <ManageDormitory v-else-if="index === '/manageDormitory'" />
         <ManageSystem v-else-if="index === '/manageSystem'" />
         <ManageDashboard v-else />
     </div>
@@ -20,8 +19,7 @@ import ManageDashboard from '@/components/ManageDashboard.vue'
 import ManageAnnouncement from '@/components/ManageAnnouncement.vue'
 import ManageUser from '@/components/ManageUser.vue'
 import ManageSite from '@/components/ManageSite.vue'
-import ManageProduct from '@/components/ManageProduct.vue'
-import ManageHotel from '@/components/ManageDormitory.vue'
+import ManageDormitory from '@/components/ManageDormitory.vue'
 import ManageSystem from '@/components/ManageSystem.vue'
 
 const axios = require('axios')
@@ -42,8 +40,7 @@ export default {
         ManageAnnouncement,
         ManageUser,
         ManageSite,
-        ManageProduct,
-        ManageHotel,
+        ManageDormitory,
         ManageSystem
     },
     computed: {

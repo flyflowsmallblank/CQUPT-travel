@@ -2,7 +2,6 @@
 <div>
     <div class="top-bar">
         <el-button type="primary" icon="el-icon-edit" @click="addAnnouncement()">发布公告</el-button>
-        <el-button :span="1" icon="el-icon-search">搜索</el-button>
     </div>
     <el-col :span="23" class="data-table">
         <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 100%">
@@ -13,17 +12,17 @@
                     <span>{{ scope.row.mesgID }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="发布时间" width="200px" sortable>
+            <el-table-column label="发布时间" width="300px" sortable>
                 <template slot-scope="scope">
-                    <span>{{ scope.row.mesgDate }}</span>
+                    <span>{{ scope.row.createdAt }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="通知名称" :span="1" sortable>
+            <el-table-column label="通知名称" :span="1" width="200px" sortable>
                 <template slot-scope="scope">
                     <span>{{ scope.row.mesgTitle }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="详细信息" :span="5" sortable>
+            <el-table-column label="详细信息" :span="5" width="300px" sortable>
                 <template slot-scope="scope">
                     <span>{{ scope.row.mesgDesc }}</span>
                 </template>
@@ -37,7 +36,7 @@
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' @confirm="handleDelete(scope.$index, scope.row)" icon="el-icon-info" icon-color="red" title="确定删除该用户吗？">
-                        <el-button slot="reference" size="mini" type="danger" style="margin-left: 5px;">删除</el-button>
+                        <el-button slot="reference" size="mini" type="danger"  style="margin-left: -60px;;">删除</el-button>
                     </el-popconfirm>
                 </template>
             </el-table-column>
@@ -90,7 +89,7 @@ export default {
             form: {
                 mesgTitle: '',
                 mesgDesc: '',
-                mesgDate: ''
+				createdAt: ''
             },
             tableData: [],
             rules: {
@@ -122,7 +121,7 @@ export default {
                 }
             }).then(function (response) {
                 ele.Message.success('加载公告数据成功')
-                _this.tableData = response.data.mesgList
+                _this.tableData = response.data.data
             }).catch(function (error) {
                 console.log(error)
             })
@@ -162,10 +161,8 @@ export default {
                             mesgAuthor: this.userName,
                         })
                     }).then(function (response) {
-                        let status = response.data.status
                         ele.Message.success('更新公告成功')
-                        _this.tableData = response.data.mesgList
-                        _this.dialogVisible = false
+						window.location.reload();
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -191,14 +188,9 @@ export default {
                             mesgAuthor: this.userName,
                         })
                     }).then(function (response) {
-                        let status = response.data.status
-                        if (status == 'success') {
                             ele.Message.success('发布公告成功')
-                            _this.tableData = response.data.mesgList
                             _this.dialogVisible = false
-                        } else {
-                            ele.Message.error("发布公告失败")
-                        }
+							window.location.reload();
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -229,7 +221,8 @@ export default {
                 })
             }).then(function (response) {
                 ele.Message.success('更新用户数据成功')
-                _this.tableData = response.data.mesgList
+                _this.tableData = response.data.data
+				window.location.reload();
             }).catch(function (error) {
                 console.log(error)
             })

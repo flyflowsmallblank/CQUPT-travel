@@ -7,7 +7,7 @@
                     <i style="color:white" :class="item.icon"></i>
                     <span slot="title">{{ item.title }}</span>
                 </el-menu-item>
-                <el-menu-item v-else style="color:#aaaaaa" :index="item.index" :key="item.index" @click="handleClick(item.index)">
+                <el-menu-item v-else style="color:#aaaaaa" :index="item.index" key="item.index" @click="handleClick(item.index)">
                     <i style="color:#aaaaaa" :class="item.icon"></i>
                     <span slot="title">{{ item.title }}</span>
                 </el-menu-item>
@@ -68,14 +68,9 @@ export default {
                     title: '景点管理'
                 },
                 {
-                    icon: 'el-icon-shopping-bag-1',
-                    index: '/manageProduct',
-                    title: '特产管理'
-                },
-                {
                     icon: 'el-icon-price-tag',
-                    index: '/manageHotel',
-                    title: '民宿管理'
+                    index: '/manageDormitory',
+                    title: '宿舍管理'
                 },
                 {
                     icon: 'el-icon-setting',
