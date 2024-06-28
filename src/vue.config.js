@@ -1,4 +1,8 @@
 // vue.config.js
 module.exports = {
-    lintOnSave: false
+    lintOnSave: false,
+	output: {
+		filename: 'cqupt-travel.js',
+		path: './'
+	}
 }
