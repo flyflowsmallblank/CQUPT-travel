@@ -1,7 +1,7 @@
 <template>
 	<div class="hello">
 		<img class="home_bottom_head_img" src="../assets/logo.png" alt="CQUPT">
-		<p class="home_bottom_head_title">{{ msg }}</p>
+		<p class="home_bottom_head_title">{{ animatedText }}</p>
 		<p style="color:#02b983">{{ msg_en }}</p>
 		<p style="margin-top: 40px">
 			让学校信息查询数字化
@@ -56,7 +56,28 @@ export default {
 	props: {
 		msg: String,
 		msg_en: String
-	}
+	},
+	data() {
+		return {
+			animatedText: ""
+		};
+	},
+	mounted() {
+		this.animateText();
+	},
+	methods: {
+		animateText() {
+			const text = this.msg;
+			let index = 0;
+			const intervalId = setInterval(() => {
+				this.animatedText = text.slice(0, index + 1);
+				index++;
+				if (index > text.length) {
+					clearInterval(intervalId);
+				}
+			}, 300); // Adjust the speed of animation here (in milliseconds)
+		}
+	},
 }
 </script>
 
@@ -70,7 +91,8 @@ export default {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	text-align: center;
 }
-.advantage div{
+
+.advantage div {
 	flex: 1;
 	img {
 		max-width: 80%;
@@ -78,6 +100,7 @@ export default {
 		border-radius: 10px;
 	}
 }
+
 h3 {
 	margin: 40px 0 0;
 }
@@ -100,17 +123,29 @@ a {
 	padding-bottom: 50px;
 }
 
+.home_bottom_head_img {
+	width: 150px;
+	height: 150px;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+
 .home_bottom_head_title {
 	font-size: 50px;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
 	margin-top: 0px;
+	animation: fadeIn 4s ease forwards;
+	opacity: 0;
 }
 
-.home_bottom_head_img {
-	width: 150px;
-	height: 150px;
-	margin-top:30px;
-	margin-bottom: 20px;
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 </style>

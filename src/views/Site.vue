@@ -17,6 +17,7 @@
                                 <div class="grid-cont-right"  @click=detail(scope.$index)>
                                     <h2>{{ scope.row.siteTitle }}</h2>
                                     <p><i style="color:#42b983;" class="el-icon-location">景点地址</i>&nbsp;&nbsp;{{ scope.row.siteCity }}</p>
+                                    <p><i style="color:#42b983;" class="el-icon-location">景点评分</i>&nbsp;&nbsp;{{ scope.row.siteStar }}</p>
                                 </div>
                             </el-col>
                         </el-row>
@@ -28,7 +29,7 @@
         <el-aside class="right_detail" width="50%">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>景点详情</span>
+                    <span>详情</span>
                 </div>
                 <div style="text-align:left;">
                     <h2>{{ this.siteTitle }}</h2>

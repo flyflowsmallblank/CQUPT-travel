@@ -150,19 +150,6 @@ export default {
 	text-align: justify;
 }
 
-/* Water ripple background animation */
-@keyframes ripple {
-	0% {
-		transform: scale(0);
-		opacity: 1;
-	}
-	100% {
-		transform: scale(4);
-		opacity: 0;
-	}
-}
-
-/* Gradient background animation */
 @keyframes gradientAnimation {
 	0% {
 		background-position: 0 50%;
@@ -175,7 +162,6 @@ export default {
 	}
 }
 
-/* Fade-in up animation for text */
 @keyframes fadeInUp {
 	from {
 		opacity: 0;

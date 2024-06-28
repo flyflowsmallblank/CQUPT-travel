@@ -209,6 +209,8 @@ export default {
 				}).catch(function (error) {
 					console.log(error)
 				})
+			}else{
+				ele.Message.error("评论为空");
 			}
 		},
 		getDormitoryList() {
