@@ -28,7 +28,7 @@
                     <span>{{ scope.row.siteCity }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="景点介绍" :span="5" sortable>
+            <el-table-column label="景点介绍" :span="5" sortable  width="350px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.siteDesc }}</span>
                 </template>
@@ -76,7 +76,7 @@
                 <el-input v-model="form.siteDesc"></el-input>
             </el-form-item>
             <el-form-item v-show=!editable label="添加图片">
-                <el-upload class="avatar-uploader" action="http://localhost:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
+                <el-upload class="avatar-uploader" action="http://115.159.4.245:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="imgDialogVisible">
@@ -196,7 +196,7 @@ export default {
 			let _this = this
 			axios({
 				method: 'post',
-				url: 'http://localhost:8080/addSite',
+				url: 'http://115.159.4.245:8080/addSite',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				},
@@ -212,8 +212,8 @@ export default {
 				if (status === 'success') {
 					ele.Message.success('创建景点成功')
 					_this.tableData = response.data.data
+					_this.getSiteList()
 					_this.dialogVisible = false
-					window.location.reload();
 				} else {
 					ele.Message.error("创建景点失败")
 				}
@@ -227,7 +227,7 @@ export default {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/updateSite',
+                        url: 'http://115.159.4.245:8080/updateSite',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
@@ -243,8 +243,8 @@ export default {
                         let status = response.data.data.status
                         ele.Message.success('更新景点数据成功')
                         _this.tableData = response.data.data
-                        _this.dialogVisible = false
-						window.location.reload();
+						_this.getSiteList()
+						_this.dialogVisible = false
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -258,7 +258,7 @@ export default {
             let _this = this
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/deleteSite',
+                url: 'http://115.159.4.245:8080/deleteSite',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
@@ -268,31 +268,30 @@ export default {
             }).then(function (response) {
                 ele.Message.success('更新数据成功')
                 _this.tableData = response.data.data
-				window.location.reload();
+				_this.getSiteList()
+				_this.dialogVisible = false
             }).catch(function (error) {
                 console.log(error)
             })
-        }
+        },
+		getSiteList(){
+			let _this = this
+			this.userName = window.localStorage.getItem('userName')
+			axios({
+				method: 'get',
+				url: 'http://115.159.4.245:8080/getSiteList',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				}
+			}).then(function (response) {
+				_this.tableData = response.data.data
+			}).catch(function (error) {
+				console.log(error)
+			})
+		}
     },
     created() {
-        if (false) {
-            ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
-            this.$router.push('/login')
-        } else {
-            let _this = this
-            this.userName = window.localStorage.getItem('userName')
-            axios({
-                method: 'get',
-                url: 'http://localhost:8080/getSiteList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                }
-            }).then(function (response) {
-                _this.tableData = response.data.data
-            }).catch(function (error) {
-                console.log(error)
-            })
-        }
+		this.getSiteList()
     }
 }
 </script>

@@ -87,7 +87,7 @@ export default {
         this.userName = window.localStorage.getItem('userName')
         axios({
             method: 'get',
-            url: 'http://localhost:8080/getAnnouncementList',
+            url: 'http://115.159.4.245:8080/getAnnouncementList',
             headers: {
                 'Content-type': 'application/x-www-form-urlencoded'
             }

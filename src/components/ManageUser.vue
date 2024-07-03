@@ -4,8 +4,8 @@
         <el-button type="primary" icon="el-icon-plus" @click="addUser()">添加用户</el-button>
         <!-- <el-col :span="4" :offset="0"><el-tag style="margin-left:300px">用户信息管理 | 数据无价 小心操作</el-tag></el-col> -->
     </el-row>
-    <el-col :span="23" class="data-table">
-        <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 100%">
+    <el-row class="data-table" >
+        <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 65%">
             <el-table-column label="用户ID" width="100px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.userID }}</span>
@@ -18,7 +18,7 @@
                             <img :src=scope.row.userProfile class="user-avator" alt style="height: 100px;" />
                             <div class="user-info-cont">
                                 <p>名称: {{ scope.row.userName }}</p>
-                                <p>密码: {{ scope.row.userPassword }}</p>
+                                <p>密码: *******</p>
                                 <p>介绍: {{ scope.row.userDesc }}</p>
                             </div>
                         </div>
@@ -29,9 +29,9 @@
                 </template>
             </el-table-column>
             <el-table-column label="密码" width="180px">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.userPassword }}</span>
-                </template>
+                <p>
+					*******
+				</p>
             </el-table-column>
             <el-table-column label="性别" width="100px">
                 <template slot-scope="scope">
@@ -46,11 +46,6 @@
             <el-table-column label="电话" width="180px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.userPhone }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="头像" width="380px">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.userProfile.slice(0, 50) + '...'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态" width="100px;">
@@ -69,28 +64,25 @@
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pagesize" background layout="total, sizes, prev, pager, next, jumper" :total="tableData.length" style="padding-top:20px">
         </el-pagination>
-    </el-col>
+    </el-row>
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%">
         <el-form ref="form" :model="form" :rules='rules' label-width="80px">
             <el-alert v-if="!editable" title="管理员添加用户时只能使用默认头像" type="warning" style="margin-bottom: 20px; margin-top:-20px;"></el-alert>
-            <el-form-item v-if="editable" label="" prop="userSex">
-                <img :src=form.userProfile style="height: 100px;">
-            </el-form-item>
             <el-form-item label="姓名" prop="userName">
                 <el-input v-model="form.userName"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="userPassword">
                 <el-input v-model="form.userPassword" show-password></el-input>
             </el-form-item>
-            <el-form-item v-if="editable" label="头像" prop="userProfile">
-                <el-input v-model="form.userProfile"></el-input>
-            </el-form-item>
             <el-form-item label="年龄" prop="userAge">
                 <el-input v-model="form.userAge"></el-input>
             </el-form-item>
-            <el-form-item label="性别" prop="userSex">
-                <el-input v-model="form.userSex"></el-input>
-            </el-form-item>
+			<el-form-item label="性别" prop="userSex">
+				<el-select v-model="form.userSex" placeholder="请选择性别" style="left: -129px">
+					<el-option label="男" value="男"></el-option>
+					<el-option label="女" value="女"></el-option>
+				</el-select>
+			</el-form-item>
             <el-form-item label="电话" prop="userSex">
                 <el-input v-model="form.userPhone"></el-input>
             </el-form-item>
@@ -113,6 +105,10 @@
 <style scoped>
 .data-table {
     margin-top: 20px;
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 </style>
 
@@ -124,24 +120,7 @@ const ele = require('element-ui')
 export default {
     name: 'manageUser',
     created() {
-        if (window.localStorage.getItem('userType') != 'admin') {
-            ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
-            this.$router.push('/login')
-        } else {
-            let _this = this
-            axios({
-                method: 'get',
-                url: 'http://localhost:8080/getUserList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                }
-            }).then(function (response) {
-                ele.Message.success('加载用户数据成功')
-                _this.tableData = response.data.data.userList
-            }).catch(function (error) {
-                console.log(error)
-            })
-        }
+		this.getUserList()
     },
     data() {
         return {
@@ -159,7 +138,6 @@ export default {
                 userSex: '',
                 userPhone: '',
                 userDesc: '',
-                userProfile: '',
                 userStatus: ''
             },
             tableData: [],
@@ -181,15 +159,45 @@ export default {
                         message: "密码长度在6-30之间",
                         trigger: 'blur'
                     }
-                ]
+                ],
+				userPhone:[{
+					required: true,
+					message: "手机号码为必填项",
+					trigger: "blur",
+				},
+					{
+						pattern: /^1[3456789]\d{9}$/,
+						message: "手机号码格式不正确",
+						trigger: "blur",
+					}]
             },
         }
     },
     methods: {
+		getUserList(){
+			if (window.localStorage.getItem('userType') != 'admin') {
+				ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
+				this.$router.push('/login')
+			} else {
+				let _this = this
+				axios({
+					method: 'get',
+					url: 'http://115.159.4.245:8080/getUserList',
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function (response) {
+					ele.Message.success('加载用户数据成功')
+					_this.tableData = response.data.data.userList
+				}).catch(function (error) {
+					console.log(error)
+				})
+			}
+		},
 		handleModifyUser(formName) {
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					axios.post('http://localhost:8080/updateUserAdmin', qs.stringify({
+					axios.post('http://115.159.4.245:8080/updateUserAdmin', qs.stringify({
 						userID: this.currentUserID,
 						userNamePrev: this.prevUserName,
 						userName: this.form.userName,
@@ -207,7 +215,8 @@ export default {
 							ele.Message.error("该用户名已经被别人占用啦，换一个吧~");
 						} else {
 							ele.Message.success('更新用户数据成功');
-							window.location.reload();  // 添加这行代码来刷新页面
+							_this.getUserList()
+							_this.dialogVisible = false
 						}
 					}).catch(error => {
 						console.log(error);
@@ -237,7 +246,7 @@ export default {
             let _this = this
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/deleteUser',
+                url: 'http://115.159.4.245:8080/deleteUser',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
@@ -246,7 +255,8 @@ export default {
                 })
             }).then(function (response) {
                 ele.Message.success('更新用户数据成功')
-				window.location.reload();
+				_this.getUserList()
+				_this.dialogVisible = false
 			}).catch(function (error) {
                 console.log(error)
             })
@@ -273,7 +283,7 @@ export default {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/addUser',
+                        url: 'http://115.159.4.245:8080/addUser',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
@@ -293,8 +303,8 @@ export default {
                         } else {
                             ele.Message.success('新建用户成功')
                             _this.tableData = response.data.data.userList
-                            _this.dialogVisible = false
-							window.location.reload();
+							_this.getUserList()
+							_this.dialogVisible = false
 						}
                     }).catch(function (error) {
                         console.log(error)

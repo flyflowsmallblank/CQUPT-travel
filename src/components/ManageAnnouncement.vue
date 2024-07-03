@@ -107,27 +107,30 @@ export default {
         }
     },
     created() {
-        if (window.localStorage.getItem('userType') != 'admin') {
-            ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
-            this.$router.push('/login')
-        } else {
-            let _this = this
-            this.userName = window.localStorage.getItem('userName')
-            axios({
-                method: 'get',
-                url: 'http://localhost:8080/getAnnouncementList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                }
-            }).then(function (response) {
-                ele.Message.success('加载公告数据成功')
-                _this.tableData = response.data.data
-            }).catch(function (error) {
-                console.log(error)
-            })
-        }
+        this.getAnnouncementList()
     },
     methods: {
+		// 获取公告列表
+		getAnnouncementList() {
+			if (window.localStorage.getItem('userType') != 'admin') {
+				ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
+				this.$router.push('/login')
+			} else {
+				let _this = this
+				this.userName = window.localStorage.getItem('userName')
+				axios({
+					method: 'get',
+					url: 'http://115.159.4.245:8080/getAnnouncementList',
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function (response) {
+					_this.tableData = response.data.data
+				}).catch(function (error) {
+					console.log(error)
+				})
+			}
+		},
         // 初始页currentPage、初始每页数据数pagesize和数据data
         handleSizeChange: function (size) {
             this.pagesize = size;
@@ -150,7 +153,7 @@ export default {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/updateAnnouncement',
+                        url: 'http://115.159.4.245:8080/updateAnnouncement',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
@@ -162,8 +165,9 @@ export default {
                         })
                     }).then(function (response) {
                         ele.Message.success('更新公告成功')
-						window.location.reload();
-                    }).catch(function (error) {
+						_this.getAnnouncementList()
+						_this.dialogVisible = false
+					}).catch(function (error) {
                         console.log(error)
                     })
                 } else {
@@ -178,7 +182,7 @@ export default {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/addAnnouncement',
+                        url: 'http://115.159.4.245:8080/addAnnouncement',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
@@ -190,7 +194,8 @@ export default {
                     }).then(function (response) {
                             ele.Message.success('发布公告成功')
                             _this.dialogVisible = false
-							window.location.reload();
+							_this.getAnnouncementList()
+							_this.dialogVisible = false
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -212,7 +217,7 @@ export default {
             let _this = this
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/deleteAnnouncement',
+                url: 'http://115.159.4.245:8080/deleteAnnouncement',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
@@ -222,7 +227,8 @@ export default {
             }).then(function (response) {
                 ele.Message.success('更新用户数据成功')
                 _this.tableData = response.data.data
-				window.location.reload();
+				_this.getAnnouncementList()
+				_this.dialogVisible = false
             }).catch(function (error) {
                 console.log(error)
             })

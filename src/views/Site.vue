@@ -17,7 +17,6 @@
                                 <div class="grid-cont-right"  @click=detail(scope.$index)>
                                     <h2>{{ scope.row.siteTitle }}</h2>
                                     <p><i style="color:#42b983;" class="el-icon-location">景点地址</i>&nbsp;&nbsp;{{ scope.row.siteCity }}</p>
-                                    <p><i style="color:#42b983;" class="el-icon-location">景点评分</i>&nbsp;&nbsp;{{ scope.row.siteStar }}</p>
                                 </div>
                             </el-col>
                         </el-row>
@@ -81,7 +80,7 @@ export default {
         this.userName = window.localStorage.getItem('userName')
         axios({
             method: 'get',
-            url: 'http://localhost:8080/getSiteList',
+            url: 'http://115.159.4.245:8080/getSiteList',
             headers: {
                 'Content-type': 'application/x-www-form-urlencoded'
             }

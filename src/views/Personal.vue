@@ -26,7 +26,7 @@
 							<el-form-item label="修改头像" v-if="!editable">
 								<el-upload
 									class="avatar-uploader"
-									action="http://localhost:8080/uploadUserProfile"
+									action="http://115.159.4.245:8080/uploadUserProfile"
 									list-type="picture-card"
 									:show-file-list="true"
 									:on-preview="handlePictureCardPreview"
@@ -105,7 +105,7 @@ export default {
 				let _this = this;
 				axios({
 					method: 'post',
-					url: 'http://localhost:8080/updateUser',
+					url: 'http://115.159.4.245:8080/updateUser',
 					headers: {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
@@ -154,7 +154,7 @@ export default {
 			let _this = this;
 			axios({
 				method: 'post',
-				url: 'http://localhost:8080/getUser',
+				url: 'http://115.159.4.245:8080/getUser',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				},

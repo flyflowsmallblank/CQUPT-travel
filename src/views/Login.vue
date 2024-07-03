@@ -19,31 +19,7 @@
         </el-form>
     </div>
     <div v-else>
-        <el-form ref="registeForm" :model="registeForm" :rules="registeRules" label-width="80px" class="login-box">
-            <h3 class="login-title">注册新用户</h3>
-            <el-form-item label="姓名" prop="userName">
-                <el-input v-model="registeForm.userName"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="userPassword">
-                <el-input v-model="registeForm.userPassword" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="年龄" prop="userAge">
-                <el-input v-model="registeForm.userAge"></el-input>
-            </el-form-item>
-            <el-form-item label="性别" prop="userSex">
-                <el-input v-model="registeForm.userSex"></el-input>
-            </el-form-item>
-            <el-form-item label="电话" prop="userSex">
-                <el-input v-model="registeForm.userPhone"></el-input>
-            </el-form-item>
-            <el-form-item label="介绍" prop="userDesc">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" placeholder="请输入内容" v-model="registeForm.userDesc"></el-input>
-            </el-form-item>
-            <el-form-item>
-                    <el-button type="primary" @click="onSubmitRegist('registeForm')">注 册</el-button>
-                    <el-button @click="onCancelRegist()">取 消</el-button>
-            </el-form-item>
-        </el-form>
+		<el-form ref="registeForm" :model="registeForm" :rules="registeRules" label-width="80px" class="login-box"> <h3 class="login-title">注册新用户</h3> <el-form-item label="姓名" prop="userName"> <el-input v-model="registeForm.userName"></el-input> </el-form-item> <el-form-item label="密码" prop="userPassword"> <el-input v-model="registeForm.userPassword" show-password></el-input> </el-form-item> <el-form-item label="年龄" prop="userAge"> <el-input v-model="registeForm.userAge"></el-input> </el-form-item> <el-form-item label="性别" prop="userSex"> <el-select v-model="registeForm.userSex" placeholder="请选择性别" style="left: -113px"> <el-option label="男" value="男"></el-option> <el-option label="女" value="女"></el-option> </el-select> </el-form-item> <el-form-item label="电话" prop="userPhone"> <el-input v-model="registeForm.userPhone" :rules="[ { required: true, message: '请输入正确的手机号码', trigger: 'blur' }, { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' } ]"></el-input> </el-form-item> <el-form-item label="介绍" prop="userDesc"> <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" placeholder="请输入内容" v-model="registeForm.userDesc"></el-input> </el-form-item> <el-form-item> <el-button type="primary" @click="onSubmitRegist('registeForm')">注 册</el-button> <el-button @click="onCancelRegist()">取 消</el-button> </el-form-item> </el-form>
     </div>
 </div>
 </template>
@@ -102,7 +78,17 @@ export default {
                     max: 30,
                     message: "密码长度在6-30之间",
                     trigger: "blur",
-                }]
+                }],
+				userPhone:[{
+					required: true,
+					message: "手机号码为必填项",
+					trigger: "blur",
+				},
+				{
+					pattern: /^1[3456789]\d{9}$/,
+					message: "手机号码格式不正确",
+					trigger: "blur",
+				}]
             }
         };
     },
@@ -132,7 +118,7 @@ export default {
                     if (valid) {
                         axios({
                             method: "post",
-                            url: "http://localhost:8080/login",
+                            url: "http://115.159.4.245:8080/login",
                             headers: {
                                 "Content-type": "application/x-www-form-urlencoded",
                             },
@@ -142,6 +128,10 @@ export default {
                             }),
                         })
                         .then(function (response) {
+							if (response.data.code === -1) {
+								ele.Message.error("登录失败，请检查用户名或者密码是否正确");
+								return;
+							}
                             const status = response.data.data.status;
 							localStorage.setItem("userName", _this.loginForm.userName);
 							localStorage.setItem("userID",response.data.data.userID)
@@ -153,8 +143,6 @@ export default {
                                 ele.Message.success("欢迎您 尊贵的用户，即将跳转到个人主页");
                                 localStorage.setItem("userType", "user");
                                 _this.$router.push("/personal");
-                            } else {
-                                ele.Message.error("登录失败，请检查用户名或者密码是否正确");
                             }
                         })
                         .catch(function (error) {
@@ -170,7 +158,7 @@ export default {
                     let _this = this
                     axios({
                         method: "post",
-                        url: "http://localhost:8080/addUser",
+                        url: "http://115.159.4.245:8080/addUser",
                         headers: {
                             "Content-type": "application/x-www-form-urlencoded",
                         },
@@ -185,16 +173,15 @@ export default {
                         }),
                     })
                     .then(function (response) {
-                        let status = response.data.data.status;
-                        if (status == "failed") {
-                            ele.Message.error("该用户名已经被别人占用啦，换一个吧~");
-                        } else {
-                            ele.Message.success("注册成功 即将跳转到个人主页");
-                            localStorage.setItem("userName", _this.registeForm.userName);
-							localStorage.setItem("userID",_this.userID)
-                            localStorage.setItem("userType", "user");
-                            _this.$router.push("/personal");
-                        }
+						if (response.data.code === -1) {
+							ele.Message.error("该用户名已经被别人占用啦，换一个吧~");
+							return;
+						}
+						ele.Message.success("注册成功 即将跳转到个人主页");
+						localStorage.setItem("userName", _this.registeForm.userName);
+						localStorage.setItem("userID",_this.userID)
+						localStorage.setItem("userType", "user");
+						_this.$router.push("/personal");
                     })
                     .catch(function (error) {
                         console.log(error);

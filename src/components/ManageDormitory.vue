@@ -2,7 +2,6 @@
 <div>
     <div class="top-bar">
         <el-button type="primary" icon="el-icon-edit" @click="addDormitory()">添加宿舍</el-button>
-        <el-button :span="1" icon="el-icon-search">搜索</el-button>
     </div>
     <el-col :span="23" class="data-table">
         <el-table :data="tableData.slice((currentPage - 1)* pagesize, currentPage * pagesize)" border style="width: 100%">
@@ -102,7 +101,7 @@
                 <el-input v-model="form.dormitoryRemain"></el-input>
             </el-form-item>
             <el-form-item v-show=!editable label="添加图片">
-                <el-upload class="avatar-uploader" action="http://localhost:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
+                <el-upload class="avatar-uploader" action="http://115.159.4.245:8080/uploadPicture" list-type="picture-card" :show-file-list="true" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :auto-upload="false" ref="upload" :on-success="onSuccess" :on-progress="onProgress" :limit="1">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="imgDialogVisible">
@@ -194,31 +193,29 @@ export default {
         }
     },
     created() {
-        if (false) {
-            ele.Message.error("你没有管理员权限访问后台，即将跳转到登录页面")
-            this.$router.push('/login')
-        } else {
-            let _this = this
-            this.userName = window.localStorage.getItem('userName')
-            axios({
-                method: 'get',
-                url: 'http://localhost:8080/getDormitoryList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                }
-            }).then(function (response) {
+		this.getDormitoryList()
+    },
+    methods: {
+		getDormitoryList() {
+			let _this = this
+			this.userName = window.localStorage.getItem('userName')
+			axios({
+				method: 'get',
+				url: 'http://115.159.4.245:8080/getDormitoryList',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				}
+			}).then(function (response) {
 				if (Array.isArray(response.data.data)) {
 					_this.tableData = response.data.data;
 				} else {
 					console.error('API 响应的数据结构不正确:', response.data);
 				}
-            }).catch(function (error) {
-                console.log(error)
-            })
-        }
-    },
-    methods: {
-        // 初始页currentPage、初始每页数据数pagesize和数据data
+			}).catch(function (error) {
+				console.log(error)
+			})
+		},
+		// 初始页currentPage、初始每页数据数pagesize和数据data
         handleSizeChange: function (size) {
             this.pagesize = size;
             console.log(this.pagesize) //每页下拉显示数据
@@ -282,7 +279,7 @@ export default {
                 let _this = this
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/addDormitory',
+                    url: 'http://115.159.4.245:8080/addDormitory',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
@@ -302,8 +299,8 @@ export default {
                     if (status == 'success') {
                         ele.Message.success('创建宿舍成功')
                         _this.tableData = response.data.data
+						_this.getDormitoryList()
                         _this.dialogVisible = false
-						window.location.reload();
                     } else {
                         ele.Message.error("创建宿舍失败")
                     }
@@ -320,7 +317,7 @@ export default {
                     let _this = this
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/updateDormitory',
+                        url: 'http://115.159.4.245:8080/updateDormitory',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
@@ -337,11 +334,10 @@ export default {
                             dormitoryAuthor: this.userName
                         })
                     }).then(function (response) {
-                        let status = response.data.data.status
                         ele.Message.success('更新宿舍数据成功')
                         _this.tableData = response.data.data
-                        _this.dialogVisible = false
-						window.location.reload();
+						_this.getDormitoryList()
+						_this.dialogVisible = false
                     }).catch(function (error) {
                         console.log(error)
                     })
@@ -355,7 +351,7 @@ export default {
             let _this = this
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/deleteDormitory',
+                url: 'http://115.159.4.245:8080/deleteDormitory',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
@@ -365,8 +361,8 @@ export default {
             }).then(function (response) {
                 ele.Message.success('更新数据成功')
                 _this.tableData = response.data.data
-				console.log(_this.tableData)
-				window.location.reload();
+				_this.getDormitoryList()
+				_this.dialogVisible = false
             }).catch(function (error) {
                 console.log(error)
             })

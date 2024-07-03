@@ -6,7 +6,6 @@
 					<el-col :span="8">
 						<el-card shadow="hover" :body-style="{padding: '0px'}">
 							<div class="grid-content grid-con-1">
-								<el-avatar class="icon" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
 								<div class="grid-cont-right">
 									<div class="grid-num">{{ name }}</div>
 									<div>管理员账号</div>
@@ -123,7 +122,7 @@ export default {
 			let _this = this
 			axios({
 				method: 'get',
-				url: 'http://localhost:8080/getUserList',
+				url: 'http://115.159.4.245:8080/getUserList',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				}
@@ -135,7 +134,7 @@ export default {
 
 			axios({
 				method: 'get',
-				url: 'http://localhost:8080/getAnnouncementList',
+				url: 'http://115.159.4.245:8080/getAnnouncementList',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				}

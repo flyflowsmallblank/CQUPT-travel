@@ -172,7 +172,7 @@ export default {
 			});
 			axios({
 				method: 'get',
-				url: `http://localhost:8080/getCommentList?${queryParams}`,
+				url: `http://115.159.4.245:8080/getCommentList?${queryParams}`,
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				},
@@ -193,7 +193,7 @@ export default {
 				console.log(this.dormitoryID)
 				axios({
 					method: 'post',
-					url: 'http://localhost:8080/comment',
+					url: 'http://115.159.4.245:8080/comment',
 					headers: {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
@@ -217,7 +217,7 @@ export default {
 			let _this = this;
 			axios({
 				method: 'get',
-				url: 'http://localhost:8080/getDormitoryList',
+				url: 'http://115.159.4.245:8080/getDormitoryList',
 				headers: {
 					'Content-type': 'application/x-www-form-urlencoded'
 				}
